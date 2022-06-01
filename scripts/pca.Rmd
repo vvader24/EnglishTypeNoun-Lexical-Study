@@ -1,0 +1,233 @@
+---
+title: "PCA"
+author: "Vinita Vader"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(psych)
+library(corrr)
+library(readxl)
+```
+
+# Varimax 5 candidate model 
+```{r}
+data <- rio::import(here::here("data", "data.csv"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names() %>% 
+  dplyr::select(angel:young)
+
+pca_vrx5 <- principal(data, nfactors = 5, rotate = "varimax")
+pca_vrx5 <- fa.sort(pca_vrx5)
+
+  
+vrx5_loadings <-  unclass(loadings(pca_vrx5))%>% 
+    as_tibble(rownames = "id")
+ 
+
+rio::export( vrx5_loadings, "pca_vrx5.xlsx")
+
+```
+
+```{r}
+fs_data <- rio::import(here::here("data", "typenoun_FSonly1_5_8_13_32.xlsx"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names() %>% 
+  dplyr::select(fsr1unr1, fsr5vx1:fsr5vx5, fsr8vx1:fsr8vx8, fsr13ob1:fsr13ob13, fsz32ob1:fsz32ob32)
+
+cor_mat <- fs_data %>% 
+  cor() %>% 
+  round(3) %>% 
+as_tibble(rownames = "id")
+
+rio::export( cor_mat, "cor_mat_1_5_8_13_32.xlsx")
+```
+
+
+# Addendum 1
+
+We will generate correlations matrices showing the relation to the 1, 5, 8, and 13-factor models' variables to the following 'external/etic variables': the Dutch and the German type-noun factors, the Big Five, Big Three, Big Two, and Big One structures as well the Multi-Language Seven set.
+
+#### Import data
+```{r}
+#data with all fs and type-nouns 
+data <- rio::import(here::here("data", "typenoun.sav"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names()
+
+#data.frame(names(data)) %>% View
+
+#data for the factor scores of 1,5,8,13 and 32 factor candidate models 
+fs_candModels <- rio::import(here::here("data", "typenoun_FSonly1_5_8_13_32.xlsx"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names()
+
+
+```
+
+#### Functions
+```{r}
+#function for fs_candModels data
+select_Vars <- function(varNames){
+  fs_candModels %>% 
+    dplyr::select_at(vars(all_of((varNames))))
+}
+
+#function for data
+select_Vars2 <- function(varNames){
+  data %>% 
+    dplyr::select_at(vars(all_of((varNames))))
+}
+
+```
+
+
+
+```{r}
+var_names_string <- function(actual_string){
+   extract_no <- str_extract_all({{actual_string}},"\\(?[0-9,.]+\\)?") %>% 
+    unlist() %>% 
+    as.numeric()
+   
+   var_names <- paste0({{actual_string}}, 1:extract_no)
+    var_names
+}
+
+cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), each = 2)
+
+fs_var_names <- map(cand_model_names, var_names_string)
+
+#names(var_names_list) <- rep(c("var_1", "var_5", "var_8", "var_13", "var_32"), each = 2)
+
+list_fs <- fs_var_names %>% 
+ purrr::map(select_Vars)
+```
+
+
+##### **German male-target factors**  
+M1 - Weakling, Sissy, Chicken, Coward, Softy  
+M2 - Smart-aleck, Wise-guy, Pain-in-the-neck, Liar, Loudmouth  
+M3 - Thinker, Intellectual, Genius, Egghead, Quick-thinker  
+M4 - Joker, Clown, Comedian, Life-of-the-party, Jester  |
+M5 - Ladies'-man, Lady-killer, Playboy, Stud, Womanizer 
+M6 - Recluse, Loner, Skeptic,  Nag, Individual  
+M7 - Stickler, Careerist, Born-fighter, High-flier  
+
+```{r}
+g_m_var <- c(paste0("sc_gm", 1:7))
+german_man_df <- select_Vars2(g_m_var)
+```
+
+
+#####  **German female-target factors ** 
+F1 - Loudmouth, Nag, Nuisance, Pest, Pain-in-the-neck 
+F2 - Thinker, Authority, Intellectual, Egghead, Quick-thinker 
+F3 - Joker, Comedian, Life-of-the-party, Pal 
+F4 - Conservative, Bore, Sleephead, Coward, Hanger-on 
+F5 - Pessimist, Chicken, Dreamer, Daydreamer, Skeptic 
+F6 - Beauty, Careerist, Materialist, Sex-object, Fashion-plate
+```{r}
+g_w_var <- c(paste0("sc_gw", 1:6))
+german_woman_df <- select_Vars2(g_w_var)
+```
+
+#####  **German table**
+```{r}
+german_list<- list(german_man_df, german_woman_df)
+
+german_cors <- mapply(x= list_fs, y = german_list, FUN=cor) 
+
+
+cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), each = 2)
+
+mw_string <- rep(c("_m","_w"), times = 5)
+
+
+names(german_cors) <- str_c(cand_model_names , mw_string)
+
+
+
+```
+
+
+#####  **Dutch self factors** 
+Malignity - Cheater, Monster, Arch-villain, False-friend 
+Anxiety - Chicken, Scaredy-cat, Coward, Bore 
+Extraversion - Boaster, Merrymaker, Chatterer, Chatterbox 
+Culture - Strategist, Philosopher, Thinker, Intellectual 
+Antagonism - Troublemaker, Nuisance, Obstructionist, Oppositionalist 
+Perseverance - Go-getter, Worker, Workhorse 
+Materialism - Capitalist, Leader, Authority, Boss
+```{r}
+d_s_var <- c(paste0("sc_ds", 1:7))
+dutch_self_df <- select_Vars2(d_s_var)
+```
+
+##### **Dutch-partner factors** 
+Malignity - Monster, Moron, Vandal, Pain-in-the-neck 
+Extraversion - Clown, Comedian, Merrymaker 
+Anxiety - Scaredy-cat, Worrywart, Coward, Chicken Antagonism - Know-it-all, Oppositionalist, Obstructionist 
+Culture - Philosopher, Poet, Intellectual, Anarchist 
+Perseverance - Go-getter, Fighter, Worker, Workhorse 
+Colourlessness - Stoic, Pragmatist, Chameleon, Softy
+
+```{r}
+d_p_var <- c(paste0("sc_dp", 1:7))
+dutch_peer_df <- select_Vars2(d_p_var)
+```
+
+```{r}
+dutch_list<- list(dutch_self_df, dutch_peer_df)
+
+dutch_cors <- mapply(x= list_fs, y = dutch_list, FUN=cor) 
+```
+
+
+
+```{r echo=FALSE, eval=FALSE}
+#Write in excel sheet to send 
+filename <- "/Users/vinitavader/Desktop/Type-noun/data/dutch_cors.xlsx"
+
+rio::export(list(dutch_cors), check.rows = FALSE, filename)
+```
+
+
+#####  **Big Five factors** 
+Extraversion - Bold, Talkative, Sociable versus Bashful, Shy, Timid Agreeableness - Warm, Tolerant, Lenient versus Harsh, Stern, Cruel, Sly 
+Conscientiousness - Organized, Logical, Firm versus Disorganized, Unsystematic, Scatterbrained 
+Emotional Stability - Anxious, Fearful, Emotional, Jealous Intellect - Philosophical, Complex, Clever, Unconventional versus Conventional, Traditional, Unreflective
+
+```{r}
+big5_var<- c("scb5_i","scb5_ii","scb5_iii","scb5_iv","scb5_v")
+big5_df <- select_Vars(data, big5_var)
+```
+
+
+##### **Multi-Language Seven factors** 
+Gregariousness - Talkative, Sociable, Comical, Expressive versus Shy, Bashful 
+Self-Assurance - Bold, Masculine, Firm versus Fearful, Anxious, Timid 
+Even Temper - Patient versus Irritable, Harsh, Jealous, Emotional Concern for Others - Warm, Courteous, Tolerant versus Cruel, Egotistical 
+Conscientiousness - Organized, Stern, Thrifty versus Disorganized, Unsystematic 
+Originality/Virtuosity - Philosophical, Clever, Complex versus Unreflective  
+Negative Valence - Corrupt, Evil, Good-for-nothing
+```{r}
+
+```
+
+
+##### **Big One factors**
+Responsible, Patient, Warm, Clever, Sociable versus Cruel, Irritable, Disorganized, Corrupt, Dishonest
+```{r}
+#data %>% names %>% data.frame() %>% View
+```
+
+#####  **Big Two factors**  Morality and Social Propriety - Courteous, Patient, Tolerant, Responsible versus Cruel, Harsh, Irritable, Reckless, Corrupt, Egotistical  Dynamism/Dominance/Deference - Expressive, Talkative, Bold, Clever, Sociable, Humorous, Good-looking versus Timid, Dull, Bashful
+```{r}
+
+```

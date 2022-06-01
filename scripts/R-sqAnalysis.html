@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.388">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vinita Vader">
+
+<title>R-squared change for Model comprehensiveness Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="R-sqAnalysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="R-sqAnalysis_files/libs/quarto-html/quarto.js"></script>
+<script src="R-sqAnalysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="R-sqAnalysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="R-sqAnalysis_files/libs/quarto-html/anchor.min.js"></script>
+<link href="R-sqAnalysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="R-sqAnalysis_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="R-sqAnalysis_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="R-sqAnalysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="R-sqAnalysis_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#set-up" id="toc-set-up" class="nav-link active" data-scroll-target="#set-up"> <span class="header-section-number">1</span> Set up</a></li>
+  <li><a href="#analysis---description" id="toc-analysis---description" class="nav-link" data-scroll-target="#analysis---description"> <span class="header-section-number">2</span> Analysis - Description</a></li>
+  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code"> <span class="header-section-number">3</span> Code</a>
+  <ul class="collapse">
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import"> <span class="header-section-number">3.1</span> Data import</a></li>
+  <li><a href="#models-to-be-run" id="toc-models-to-be-run" class="nav-link" data-scroll-target="#models-to-be-run"> <span class="header-section-number">3.2</span> Models to be run</a>
+  <ul class="collapse">
+  <li><a href="#step1create-ivs-and-dvs" id="toc-step1create-ivs-and-dvs" class="nav-link" data-scroll-target="#step1create-ivs-and-dvs"> <span class="header-section-number">3.2.1</span> Step1:Create IVs and DVs</a></li>
+  <li><a href="#setp2-run-models" id="toc-setp2-run-models" class="nav-link" data-scroll-target="#setp2-run-models"> <span class="header-section-number">3.2.2</span> Setp2: Run models</a></li>
+  <li><a href="#setp3-table" id="toc-setp3-table" class="nav-link" data-scroll-target="#setp3-table"> <span class="header-section-number">3.2.3</span> Setp3: Table</a></li>
+  <li><a href="#setp4-plot---table" id="toc-setp4-plot---table" class="nav-link" data-scroll-target="#setp4-plot---table"> <span class="header-section-number">3.2.4</span> Setp4: Plot - table</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">R-squared change for Model comprehensiveness Analysis</h1>
+</div>
+
+
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vinita Vader </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="set-up" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Set up</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("CCA")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>(<span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="analysis---description" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Analysis - Description</h1>
+<p><u>From the Pre-registration:</u></p>
+<p><em>(slight changes -<br>
+1. 5-factor model instead of 4-factor model<br>
+2. addition of 32-factor model)</em></p>
+<p>The one unrotated type-noun factor at block/step 2, those for 5-factors at block/step 3, those for 8 factors at block/step 4, those for 13 factors at block/step 5, and those for 32 factors at block/step 6 with the change in R-squared at each step as the key coefficient to report.</p>
+</section>
+<section id="code" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Code</h1>
+<section id="data-import" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="data-import"><span class="header-section-number">3.1</span> Data import</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_big5 <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"typenoun.sav"</span>), <span class="at">setclass =</span> <span class="st">"tbl_df"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  rio<span class="sc">::</span><span class="fu">characterize</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#data for the factor scores of 1,5,8,13 and 32 factor candidate models </span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>fs_candModels <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"typenoun_FSonly1_5_8_13_32.xlsx"</span>), <span class="at">setclass =</span> <span class="st">"tbl_df"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  rio<span class="sc">::</span><span class="fu">characterize</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#function for fs_candModels data</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>select_Vars <span class="ot">&lt;-</span> <span class="cf">function</span>(varNames){</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  fs_candModels <span class="sc">%&gt;%</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select_at</span>(<span class="fu">vars</span>(<span class="fu">all_of</span>((varNames))))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#function for data</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>select_Vars2 <span class="ot">&lt;-</span> <span class="cf">function</span>(varNames){</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  data_big5 <span class="sc">%&gt;%</span> </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select_at</span>(<span class="fu">vars</span>(<span class="fu">all_of</span>((varNames))))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>big5_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"scb5_i"</span>, <span class="st">"scb5_ii"</span>, <span class="st">"scb5_iii"</span>, <span class="st">"scb5_iv"</span>, <span class="st">"scb5_v"</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>big5 <span class="ot">&lt;-</span> <span class="fu">select_Vars2</span>(big5_vars) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.))</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#tibble with all the variables of interest in one </span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>all_data <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">join</span>(fs_candModels, big5, <span class="at">type=</span><span class="st">"inner"</span>, <span class="at">by =</span> <span class="st">"idx"</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="models-to-be-run" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="models-to-be-run"><span class="header-section-number">3.2</span> Models to be run</h2>
+<p>big5_dimension = fsr1unr1 big5_dimension = fsr1unr1 + fsr5vx big5_dimension = fsr1unr1 + fsr5vx + fsr8vx big5_dimension = fsr1unr1 + fsr5vx + fsr8vx +fsr13ob big5_dimension = fsr1unr1 + fsr5vx + fsr8vx +fsr13ob +fsz32ob</p>
+<section id="step1create-ivs-and-dvs" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="step1create-ivs-and-dvs"><span class="header-section-number">3.2.1</span> Step1:Create IVs and DVs</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create a vectors for names of independent and dependent variables </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>var_names_string <span class="ot">&lt;-</span> <span class="cf">function</span>(actual_string){</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   extract_no <span class="ot">&lt;-</span> <span class="fu">str_extract_all</span>({{actual_string}},<span class="st">"</span><span class="sc">\\</span><span class="st">(?[0-9,.]+</span><span class="sc">\\</span><span class="st">)?"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   var_names <span class="ot">&lt;-</span> <span class="fu">paste0</span>({{actual_string}}, <span class="dv">1</span><span class="sc">:</span>extract_no)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    var_names <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>step_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  step1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"fsr1unr"</span>),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  step2 <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>), </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  step3 <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  step4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>             </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  step5 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>, <span class="st">"fsz32ob"</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>indep <span class="ot">&lt;-</span> <span class="fu">map_depth</span>(step_list, <span class="dv">2</span>, var_names_string) <span class="sc">%&gt;%</span> <span class="fu">map</span>(., unlist) </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>dep <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"scb5_i ~"</span>, <span class="st">"scb5_ii ~"</span>, <span class="st">"scb5_iii ~"</span>, <span class="st">"scb5_iv ~"</span>, <span class="st">"scb5_v ~"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="setp2-run-models" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="setp2-run-models"><span class="header-section-number">3.2.2</span> Setp2: Run models</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function - builds the models to be run and extracts the r-squared values for each model</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>run_model<span class="ot">&lt;-</span> <span class="cf">function</span>(x, y){</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  formula <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(y,<span class="fu">paste0</span>(x <span class="sc">%&gt;%</span> unlist, <span class="at">collapse=</span><span class="st">"+"</span>)))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a> r_squared <span class="ot">&lt;-</span>  <span class="fu">lm</span>(formula, <span class="at">data =</span> all_data) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>   broom<span class="sc">::</span><span class="fu">glance</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(r.squared)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a> output <span class="ot">&lt;-</span> <span class="fu">list</span>(formula,r_squared)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a> <span class="co">#names(output) &lt;- c("formula", "value")</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a> output</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#run the models across two lists </span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>model_list <span class="ot">&lt;-</span> <span class="fu">cross2</span>(indep, dep) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invoke_map</span>(run_model, .)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#name the list</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>big5_vars <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"b5_i"</span>, <span class="st">"b5_ii"</span>, <span class="st">"b5_iii"</span>, <span class="st">"b5_iv"</span>, <span class="st">"b5_v"</span>), <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>no_string <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"_1"</span>,<span class="st">"_2"</span>, <span class="st">"_3"</span>, <span class="st">"_4"</span>, <span class="st">"_5"</span>), <span class="at">times =</span> <span class="dv">5</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>list_names <span class="ot">&lt;-</span> <span class="fu">str_c</span>(big5_vars , no_string)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(model_list) <span class="ot">&lt;-</span> list_names</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>model_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$b5_i_1
+$b5_i_1[[1]]
+scb5_i ~ fsr1unr1
+&lt;environment: 0x7f921dadf840&gt;
+
+$b5_i_1[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1   0.00482
+
+
+$b5_i_2
+$b5_i_2[[1]]
+scb5_i ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + fsr5vx5
+&lt;environment: 0x7f92203cfc10&gt;
+
+$b5_i_2[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.466
+
+
+$b5_i_3
+$b5_i_3[[1]]
+scb5_i ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + fsr5vx5 + 
+    fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + fsr8vx6 + 
+    fsr8vx7 + fsr8vx8
+&lt;environment: 0x7f9218a48980&gt;
+
+$b5_i_3[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.577
+
+
+$b5_i_4
+$b5_i_4[[1]]
+scb5_i ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + fsr5vx5 + 
+    fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + fsr8vx6 + 
+    fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + fsr13ob4 + 
+    fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + fsr13ob10 + 
+    fsr13ob11 + fsr13ob12 + fsr13ob13
+&lt;environment: 0x7f9220f73570&gt;
+
+$b5_i_4[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.606
+
+
+$b5_i_5
+$b5_i_5[[1]]
+scb5_i ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + fsr5vx5 + 
+    fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + fsr8vx6 + 
+    fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + fsr13ob4 + 
+    fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + fsr13ob10 + 
+    fsr13ob11 + fsr13ob12 + fsr13ob13 + fsz32ob1 + fsz32ob2 + 
+    fsz32ob3 + fsz32ob4 + fsz32ob5 + fsz32ob6 + fsz32ob7 + fsz32ob8 + 
+    fsz32ob9 + fsz32ob10 + fsz32ob11 + fsz32ob12 + fsz32ob13 + 
+    fsz32ob14 + fsz32ob15 + fsz32ob16 + fsz32ob17 + fsz32ob18 + 
+    fsz32ob19 + fsz32ob20 + fsz32ob21 + fsz32ob22 + fsz32ob23 + 
+    fsz32ob24 + fsz32ob25 + fsz32ob26 + fsz32ob27 + fsz32ob28 + 
+    fsz32ob29 + fsz32ob30 + fsz32ob31 + fsz32ob32
+&lt;environment: 0x7f92232fa228&gt;
+
+$b5_i_5[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.649
+
+
+$b5_ii_1
+$b5_ii_1[[1]]
+scb5_ii ~ fsr1unr1
+&lt;environment: 0x7f9223575540&gt;
+
+$b5_ii_1[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.602
+
+
+$b5_ii_2
+$b5_ii_2[[1]]
+scb5_ii ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5
+&lt;environment: 0x7f922373ee78&gt;
+
+$b5_ii_2[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.661
+
+
+$b5_ii_3
+$b5_ii_3[[1]]
+scb5_ii ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8
+&lt;environment: 0x7f92258e6e80&gt;
+
+$b5_ii_3[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.742
+
+
+$b5_ii_4
+$b5_ii_4[[1]]
+scb5_ii ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + 
+    fsr13ob4 + fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + 
+    fsr13ob10 + fsr13ob11 + fsr13ob12 + fsr13ob13
+&lt;environment: 0x7f9225a65708&gt;
+
+$b5_ii_4[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.752
+
+
+$b5_ii_5
+$b5_ii_5[[1]]
+scb5_ii ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + 
+    fsr13ob4 + fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + 
+    fsr13ob10 + fsr13ob11 + fsr13ob12 + fsr13ob13 + fsz32ob1 + 
+    fsz32ob2 + fsz32ob3 + fsz32ob4 + fsz32ob5 + fsz32ob6 + fsz32ob7 + 
+    fsz32ob8 + fsz32ob9 + fsz32ob10 + fsz32ob11 + fsz32ob12 + 
+    fsz32ob13 + fsz32ob14 + fsz32ob15 + fsz32ob16 + fsz32ob17 + 
+    fsz32ob18 + fsz32ob19 + fsz32ob20 + fsz32ob21 + fsz32ob22 + 
+    fsz32ob23 + fsz32ob24 + fsz32ob25 + fsz32ob26 + fsz32ob27 + 
+    fsz32ob28 + fsz32ob29 + fsz32ob30 + fsz32ob31 + fsz32ob32
+&lt;environment: 0x7f9225126f38&gt;
+
+$b5_ii_5[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.775
+
+
+$b5_iii_1
+$b5_iii_1[[1]]
+scb5_iii ~ fsr1unr1
+&lt;environment: 0x7f9224bed590&gt;
+
+$b5_iii_1[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.288
+
+
+$b5_iii_2
+$b5_iii_2[[1]]
+scb5_iii ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5
+&lt;environment: 0x7f92251620c8&gt;
+
+$b5_iii_2[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.422
+
+
+$b5_iii_3
+$b5_iii_3[[1]]
+scb5_iii ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8
+&lt;environment: 0x7f9225c886a0&gt;
+
+$b5_iii_3[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.483
+
+
+$b5_iii_4
+$b5_iii_4[[1]]
+scb5_iii ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + 
+    fsr13ob4 + fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + 
+    fsr13ob10 + fsr13ob11 + fsr13ob12 + fsr13ob13
+&lt;environment: 0x7f9225e6ecc0&gt;
+
+$b5_iii_4[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.490
+
+
+$b5_iii_5
+$b5_iii_5[[1]]
+scb5_iii ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + 
+    fsr13ob4 + fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + 
+    fsr13ob10 + fsr13ob11 + fsr13ob12 + fsr13ob13 + fsz32ob1 + 
+    fsz32ob2 + fsz32ob3 + fsz32ob4 + fsz32ob5 + fsz32ob6 + fsz32ob7 + 
+    fsz32ob8 + fsz32ob9 + fsz32ob10 + fsz32ob11 + fsz32ob12 + 
+    fsz32ob13 + fsz32ob14 + fsz32ob15 + fsz32ob16 + fsz32ob17 + 
+    fsz32ob18 + fsz32ob19 + fsz32ob20 + fsz32ob21 + fsz32ob22 + 
+    fsz32ob23 + fsz32ob24 + fsz32ob25 + fsz32ob26 + fsz32ob27 + 
+    fsz32ob28 + fsz32ob29 + fsz32ob30 + fsz32ob31 + fsz32ob32
+&lt;environment: 0x7f922603c828&gt;
+
+$b5_iii_5[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.596
+
+
+$b5_iv_1
+$b5_iv_1[[1]]
+scb5_iv ~ fsr1unr1
+&lt;environment: 0x7f921f7f7428&gt;
+
+$b5_iv_1[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1    0.0325
+
+
+$b5_iv_2
+$b5_iv_2[[1]]
+scb5_iv ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5
+&lt;environment: 0x7f9221162358&gt;
+
+$b5_iv_2[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.336
+
+
+$b5_iv_3
+$b5_iv_3[[1]]
+scb5_iv ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8
+&lt;environment: 0x7f9220a776b0&gt;
+
+$b5_iv_3[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.377
+
+
+$b5_iv_4
+$b5_iv_4[[1]]
+scb5_iv ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + 
+    fsr13ob4 + fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + 
+    fsr13ob10 + fsr13ob11 + fsr13ob12 + fsr13ob13
+&lt;environment: 0x7f922088fa20&gt;
+
+$b5_iv_4[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.481
+
+
+$b5_iv_5
+$b5_iv_5[[1]]
+scb5_iv ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + 
+    fsr5vx5 + fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + 
+    fsr8vx6 + fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + 
+    fsr13ob4 + fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + 
+    fsr13ob10 + fsr13ob11 + fsr13ob12 + fsr13ob13 + fsz32ob1 + 
+    fsz32ob2 + fsz32ob3 + fsz32ob4 + fsz32ob5 + fsz32ob6 + fsz32ob7 + 
+    fsz32ob8 + fsz32ob9 + fsz32ob10 + fsz32ob11 + fsz32ob12 + 
+    fsz32ob13 + fsz32ob14 + fsz32ob15 + fsz32ob16 + fsz32ob17 + 
+    fsz32ob18 + fsz32ob19 + fsz32ob20 + fsz32ob21 + fsz32ob22 + 
+    fsz32ob23 + fsz32ob24 + fsz32ob25 + fsz32ob26 + fsz32ob27 + 
+    fsz32ob28 + fsz32ob29 + fsz32ob30 + fsz32ob31 + fsz32ob32
+&lt;environment: 0x7f92206349e8&gt;
+
+$b5_iv_5[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.540
+
+
+$b5_v_1
+$b5_v_1[[1]]
+scb5_v ~ fsr1unr1
+&lt;environment: 0x7f922022ffc8&gt;
+
+$b5_v_1[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1    0.0267
+
+
+$b5_v_2
+$b5_v_2[[1]]
+scb5_v ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + fsr5vx5
+&lt;environment: 0x7f921c62c890&gt;
+
+$b5_v_2[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.369
+
+
+$b5_v_3
+$b5_v_3[[1]]
+scb5_v ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + fsr5vx5 + 
+    fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + fsr8vx6 + 
+    fsr8vx7 + fsr8vx8
+&lt;environment: 0x7f9218be55c8&gt;
+
+$b5_v_3[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.422
+
+
+$b5_v_4
+$b5_v_4[[1]]
+scb5_v ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + fsr5vx5 + 
+    fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + fsr8vx6 + 
+    fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + fsr13ob4 + 
+    fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + fsr13ob10 + 
+    fsr13ob11 + fsr13ob12 + fsr13ob13
+&lt;environment: 0x7f9218b2b288&gt;
+
+$b5_v_4[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.460
+
+
+$b5_v_5
+$b5_v_5[[1]]
+scb5_v ~ fsr1unr1 + fsr5vx1 + fsr5vx2 + fsr5vx3 + fsr5vx4 + fsr5vx5 + 
+    fsr8vx1 + fsr8vx2 + fsr8vx3 + fsr8vx4 + fsr8vx5 + fsr8vx6 + 
+    fsr8vx7 + fsr8vx8 + fsr13ob1 + fsr13ob2 + fsr13ob3 + fsr13ob4 + 
+    fsr13ob5 + fsr13ob6 + fsr13ob7 + fsr13ob8 + fsr13ob9 + fsr13ob10 + 
+    fsr13ob11 + fsr13ob12 + fsr13ob13 + fsz32ob1 + fsz32ob2 + 
+    fsz32ob3 + fsz32ob4 + fsz32ob5 + fsz32ob6 + fsz32ob7 + fsz32ob8 + 
+    fsz32ob9 + fsz32ob10 + fsz32ob11 + fsz32ob12 + fsz32ob13 + 
+    fsz32ob14 + fsz32ob15 + fsz32ob16 + fsz32ob17 + fsz32ob18 + 
+    fsz32ob19 + fsz32ob20 + fsz32ob21 + fsz32ob22 + fsz32ob23 + 
+    fsz32ob24 + fsz32ob25 + fsz32ob26 + fsz32ob27 + fsz32ob28 + 
+    fsz32ob29 + fsz32ob30 + fsz32ob31 + fsz32ob32
+&lt;environment: 0x7f922329a7c8&gt;
+
+$b5_v_5[[2]]
+# A tibble: 1 × 1
+  r.squared
+      &lt;dbl&gt;
+1     0.551</code></pre>
+</div>
+</div>
+</section>
+<section id="setp3-table" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="setp3-table"><span class="header-section-number">3.2.3</span> Setp3: Table</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r_sq_names <span class="ot">&lt;-</span> <span class="fu">str_c</span>(list_names, <span class="fu">rep</span>(<span class="st">".r.squared"</span>, <span class="at">times =</span> <span class="dv">25</span>)) </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>r.sq_table <span class="ot">&lt;-</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>   <span class="co"># create an r.squared df - retain the second r.squared values from the list above </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">[</span><span class="st">`</span>( model_list <span class="sc">%&gt;%</span> unlist, r_sq_names) <span class="sc">%&gt;%</span> unlist <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#data wrangling on the list above </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var=</span><span class="st">"model"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">"r_sq"</span><span class="ot">=</span><span class="st">"."</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">model =</span> <span class="fu">str_extract</span>(model, <span class="st">"^[^</span><span class="sc">\\</span><span class="st">.]+"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add the following cols</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">b5_dim =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Extraversion"</span>, <span class="st">"Agreeableness"</span>, <span class="st">"Conscientiousness"</span>, <span class="st">"Emotional Stability"</span>, <span class="st">"Intellect"</span>), <span class="at">each =</span> <span class="dv">5</span>),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">models_added =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"1-raw-unrt"</span>, <span class="st">"5-raw-var"</span>, <span class="st">"8-raw-var"</span>, <span class="st">"13-raw-ob"</span>, <span class="st">"32-ips-ob"</span>), <span class="at">times =</span> <span class="dv">5</span>),</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">all_mods =</span> </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"1"</span>, </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>          <span class="st">"1+5"</span>,                                        <span class="st">"1+5+8"</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>          <span class="st">"1+5+8+13"</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>          <span class="st">"1+5+8+13+32"</span>),             </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">times =</span> <span class="dv">5</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>r.sq_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 25 × 5
+   model      r_sq b5_dim        models_added all_mods   
+   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;      
+ 1 b5_i_1  0.00482 Extraversion  1-raw-unrt   1          
+ 2 b5_i_2  0.466   Extraversion  5-raw-var    1+5        
+ 3 b5_i_3  0.577   Extraversion  8-raw-var    1+5+8      
+ 4 b5_i_4  0.606   Extraversion  13-raw-ob    1+5+8+13   
+ 5 b5_i_5  0.649   Extraversion  32-ips-ob    1+5+8+13+32
+ 6 b5_ii_1 0.602   Agreeableness 1-raw-unrt   1          
+ 7 b5_ii_2 0.661   Agreeableness 5-raw-var    1+5        
+ 8 b5_ii_3 0.742   Agreeableness 8-raw-var    1+5+8      
+ 9 b5_ii_4 0.752   Agreeableness 13-raw-ob    1+5+8+13   
+10 b5_ii_5 0.775   Agreeableness 32-ips-ob    1+5+8+13+32
+# … with 15 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="setp4-plot---table" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="setp4-plot---table"><span class="header-section-number">3.2.4</span> Setp4: Plot - table</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1"</span> <span class="ot">=</span> <span class="st">"1 = 1-factor-unrotated"</span>, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>            <span class="st">"1+5"</span> <span class="ot">=</span> <span class="st">"1+5 = 1-factor-unrotated + 5-factor-varimax"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"1+5+8"</span> <span class="ot">=</span> <span class="st">"1+5+8 = 1-factor-unrotated + 5-factor-varimax + </span><span class="sc">\n</span><span class="st"> 8-factor-varimax"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"1+5+8+13"</span> <span class="ot">=</span> <span class="st">"1+5+8+13 = 1-factor-unrotated + 5-factor-varimax + </span><span class="sc">\n</span><span class="st"> 8-factor-varimax + 13-factor-oblimin"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>           <span class="st">"1+5+8+13+32"</span> <span class="ot">=</span> <span class="st">"1+5+8+13+32 = 1-factor-unrotated + 5-factor-varimax +</span><span class="sc">\n</span><span class="st"> 8-factor-varimax + 13-factor-oblimin </span><span class="sc">\n</span><span class="st"> +32-factor-oblimin"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> r.sq_table <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> all_mods , <span class="at">y =</span> r_sq, <span class="at">fill =</span> all_mods)) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> .<span class="dv">8</span>, <span class="at">key_glyph =</span> draw_key_blank) <span class="sc">+</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>b5_dim, <span class="at">scales=</span><span class="st">'free'</span>)<span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  lemon<span class="sc">::</span><span class="fu">coord_capped_cart</span>(<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Models"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"R-squared values"</span>, </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"X-axis labels"</span>)<span class="sc">+</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">rep</span>(<span class="st">"#8d9096"</span>, <span class="fu">length</span>(labels)), <span class="at">labels =</span> labels)<span class="sc">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a> jtools<span class="sc">::</span><span class="fu">theme_apa</span>(</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a> <span class="at">remove.y.gridlines =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a> <span class="at">remove.x.gridlines =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(<span class="at">text=</span><span class="fu">element_text</span>(<span class="at">family=</span><span class="st">"Helvetica"</span>),</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x=</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="fl">4.5</span>), </span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(.<span class="dv">5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.height=</span> <span class="fu">unit</span>(.<span class="dv">6</span>, <span class="st">"cm"</span>),</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">84</span>, .<span class="dv">28</span>),</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">5</span>))</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="R-sqAnalysis_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

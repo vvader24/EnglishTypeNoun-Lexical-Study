@@ -1,0 +1,295 @@
+---
+title: "Correlations"
+author: "Vinita Vader"
+date: "5/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(knitr)
+library(tidyverse)
+library(corrr)
+library(patchwork)
+```
+
+## Call data
+
+```{r}
+df <- rio::import(here::here("data", "typenoun_FSonly1_5_8_13_32.xlsx"), setclass = "tbl_df") %>% 
+  #rio::characterize() %>% 
+  janitor::clean_names()
+names(df)
+```
+
+# Functions
+
+```{r}
+#Function 1.
+#Create the correlation dot-plot 
+  # x_axis_label, y_axis_label - specify these in quotes
+cor_plot <- function(data, x_axis_label, y_axis_label){
+  
+  data %>% 
+   ggplot(aes(x = variable, y=fct_inorder(term), color = abs(value)))+
+   geom_point()+
+   scale_colour_gradient(low = "white", high = "black")+
+   labs(x = x_axis_label,
+        y = y_axis_label,
+        title = "Comparing candidate models",
+        color = "Correlation values")+
+   
+     
+    jtools::theme_apa(legend.pos = "bottomright",
+    remove.y.gridlines = FALSE,
+    remove.x.gridlines = FALSE,
+    legend.use.title = TRUE,
+    facet.title.size = 8)+
+ 
+ theme(
+      plot.title = element_text(size=7, face='bold', hjust = 0.5),
+       axis.text.x = element_text(color = "grey20", size = 6, angle = 45, hjust = .5, vjust = .5, face = "plain"),
+       
+        axis.text.y = element_text(color = "grey20", size = 6, angle = 0, hjust = 1, vjust = 0, face = "plain"),  
+       
+        axis.title.x = element_text(color = "grey20", size = 8, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+       
+        axis.title.y = element_text(color = "grey20", size = 8, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+       
+       legend.position = "bottom",
+       legend.key.width=unit(0.4,"cm"),
+       legend.key.height=unit(0.4,"cm"),
+       legend.margin=margin(-11, 0, 0, 0),
+       legend.text=element_text(size=4),
+       legend.title=element_text(size=6))
+}
+
+#Function 2.
+#Create the average rowwise correlation geom_path plot 
+avg_plot <-function(data){
+  data %>% 
+ ggplot(aes(x=mean_factors, y=term, group=1)) +
+  geom_path(size = .33, color = "#676767")+
+  geom_point(size = .6, color = "#676767")+
+  labs(title = "Rowwise \n Average", 
+       x = "Correlations values")+
+  
+    jtools::theme_apa(legend.pos = "bottomright",
+     remove.y.gridlines = FALSE,
+     remove.x.gridlines = FALSE,
+     legend.use.title = TRUE)+
+    theme(
+      plot.title = element_text(size=7, face='bold', hjust = 0.5),
+      axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(color = "grey20", size = 4.5, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+         axis.title.x = element_text(color = "grey20", size = 5.5, angle = 0, hjust = .5, vjust = 10, face = "plain")
+    )
+}
+
+#Function 3.
+#Create the sd rowwise correlation geom_path plot 
+sd_plot <- function(data){
+  data %>% 
+ ggplot(aes(x=mean_factors, y=term, group=1)) +
+  geom_path(size = .33, color = "#676767")+
+  geom_point(size = .6, color = "#676767")+
+  labs(title = "Rowwise \n Std Dev.", 
+       x = "Correlations values")+
+  
+    jtools::theme_apa(legend.pos = "bottomright",
+     remove.y.gridlines = FALSE,
+     remove.x.gridlines = FALSE,
+     legend.use.title = TRUE)+
+    theme(
+      plot.title = element_text(size=7, face='bold', hjust = 0.5),
+      axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(color = "grey20", size = 4.5, angle = 0, hjust = .5, vjust = .5, face = "plain"),
+         axis.title.x = element_text(color = "grey20", size = 5.5, angle = 0, hjust = .5, vjust = 10, face = "plain")
+    )
+}
+```
+
+## One unrotated factor - 13 factor
+
+```{r}
+typeNouns <- rio::import(here::here("data", "typeNouns.xlsx"), setclass = "tbl_df") %>% 
+  #rio::characterize() %>% 
+  janitor::clean_names()
+
+df1 <- df %>% 
+  dplyr::select(fsr1unr1:fsr13ob13) %>% 
+  correlate() %>% 
+  focus(fsr1unr1) %>% 
+  mutate(term = factor(term, levels = term[order(abs(fsr1unr1))])) %>% 
+  arrange(abs(fsr1unr1)) %>% 
+  mutate(x_cord = 1:nrow(.),
+         y_cord1 = ifelse(fsr1unr1<0, .10, -.04),
+         y_cord2 = ifelse(fsr1unr1<0, .07, -.07),
+         y_cord3 = ifelse(fsr1unr1<0, .04, -.10),)
+  
+df2 <- left_join(df1, typeNouns) %>% 
+mutate(term = factor(term, levels = term[order(abs(fsr1unr1))])) 
+  
+ 
+df2 %>%  
+  #mutate(term = factor(term, levels = term[order(abs(fsr1unr1))])) %>% 
+  ggplot(aes(x = term, y = fsr1unr1)) +
+    geom_bar(stat = "identity", alpha=.8) +
+    labs(x = "Other factors", 
+         y = "Correlation with fsr1unr1")+
+   jtools::theme_apa(legend.pos = "bottomright", 
+                    remove.y.gridlines = FALSE, 
+                    remove.x.gridlines = FALSE, 
+                    legend.font.size = 9)+
+  annotate("text", x = df2$x_cord, y = df2$y_cord1, label = df2$type_noun1, size= 2)+
+   annotate("text", x = df2$x_cord, y = df2$y_cord2, label = df2$type_noun2, size= 2)+
+   annotate("text", x = df2$x_cord, y = df2$y_cord3, label = df2$type_noun3, size= 2)+
+  scale_x_discrete(guide = guide_axis(angle = 45))
+```
+
+# 13 on X and 32 on Y
+
+## Correlation - dot plot
+
+```{r}
+df_cor_13.32 <- df %>% 
+  dplyr::select(contains(c("fsr13ob", "fsz32ob"))) %>% 
+  correlate() %>% 
+  focus(fsr13ob1:fsr13ob13) %>% 
+  reshape2::melt() 
+
+cor_plot_13.32 <- cor_plot(df_cor_13.32, 
+         x_axis_label= "13-factor Oblimin rotated - Original data",
+         y_axis_label="32-factor Oblimin rotated - Ipsatized data")
+```
+
+## Average correlation plot
+
+```{r}
+df_AvgCor_13.32 <- df_cor_13.32 %>% 
+   group_by(term = factor(term, levels = unique(term)))%>% 
+  summarise(mean_factors = mean(abs(value))) %>%
+  arrange(desc(term))
+
+avg_plot_13.32 <- avg_plot(df_AvgCor_13.32)
+
+```
+
+## SD correlation plot
+
+```{r}
+df_SdCor_13.32 <- df_cor_13.32 %>% 
+   group_by(term = factor(term, levels = unique(term)))%>% 
+  summarise(mean_factors = sd(abs(value))) %>% 
+  arrange(desc(term))
+
+sd_plot_13.32 <- sd_plot(df_SdCor_13.32 )
+
+```
+
+## Plots set up
+
+```{r}
+cor_plot_13.32 + avg_plot_13.32 + sd_plot_13.32 +
+   plot_layout(widths = c(2, .28, .28))
+```
+
+# 8 on X and 13 on Y
+
+## Correlation - dot plot
+
+```{r}
+df_cor_8.13 <- df %>% 
+  dplyr::select(contains(c("fsr8", "fsr13ob"))) %>%
+  correlate() %>% 
+  focus(fsr8vx1:fsr8vx8) %>% 
+  reshape2::melt() 
+
+cor_plot_8.13 <- cor_plot(df_cor_8.13, 
+         x_axis_label= "8-factor Varimax rotated - Original data",
+         y_axis_label="13-factor Oblimin rotated - Original data")
+```
+
+## Average correlation plot
+
+```{r}
+df_AvgCor_8.13 <- df_cor_8.13 %>% 
+   group_by(term = factor(term, levels = unique(term)))%>% 
+  summarise(mean_factors = mean(abs(value))) %>%
+  arrange(desc(term))
+
+avg_plot_8.13 <- avg_plot(df_AvgCor_8.13)
+
+```
+
+## SD correlation plot
+
+```{r}
+df_SdCor_8.13 <- df_cor_8.13 %>% 
+   group_by(term = factor(term, levels = unique(term)))%>% 
+  summarise(mean_factors = sd(abs(value))) %>% 
+  arrange(desc(term))
+
+sd_plot_8.13 <- sd_plot(df_SdCor_8.13)
+
+```
+
+## Plots set up
+
+```{r}
+cor_plot_8.13 + avg_plot_8.13 + sd_plot_8.13 +
+   plot_layout(widths = c(1.7, .34, .34))
+```
+
+# 5 on X and 8 on Y
+
+## Correlation - dot plot
+
+```{r}
+df_cor_5.8 <- df %>%
+  dplyr::select(contains(c("fsr8vx", "fsr5vx"))) %>%
+  correlate() %>% 
+  focus(fsr5vx1:fsr5vx5) %>% 
+  reshape2::melt() 
+
+cor_plot_5.8 <- cor_plot(df_cor_5.8, 
+         x_axis_label= "5-factor Varimax rotated - Original data",
+         y_axis_label="8-factor Varimax rotated - Original data")
+```
+
+## Average correlation plot
+
+```{r}
+df_AvgCor_5.8 <- df_cor_5.8 %>% 
+   group_by(term = factor(term, levels = unique(term)))%>% 
+  summarise(mean_factors = mean(abs(value))) %>%
+  arrange(desc(term))
+
+avg_plot_5.8 <- avg_plot(df_AvgCor_5.8)
+
+```
+
+##SD correlation plot
+
+```{r}
+df_SdCor_5.8 <- df_cor_5.8 %>% 
+   group_by(term = factor(term, levels = unique(term)))%>% 
+  summarise(mean_factors = sd(abs(value))) %>% 
+  arrange(desc(term))
+
+sd_plot_5.8 <- sd_plot(df_SdCor_5.8)
+
+```
+
+## Plots set up
+
+```{r}
+cor_plot_5.8 + avg_plot_5.8 + sd_plot_5.8 +
+   plot_layout(widths = c(1.2, .38, .38))
+```
+

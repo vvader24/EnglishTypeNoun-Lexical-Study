@@ -1,0 +1,71 @@
+---
+title: "Final Robustness plot"
+author: "Vinita Vader"
+output: html_document
+---
+
+```{r, message = FALSE, warning = FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(knitr)
+library(vctrs)
+library(tidyverse)
+library(ggthemes)
+library(xlsx)
+library(foreign)
+```
+
+## Plotting lines
+```{r, eval = TRUE, include=FALSE}
+df1 = rio::import(here::here("data", "RobustnessCheck.xlsx"), setclass = "tbl_df", sheet = "final_plot") %>% 
+  #rio::characterize() %>% 
+  janitor::clean_names()
+names(df1)
+
+
+data<- df1 %>% 
+      dplyr::select(average_robustness, average_squared_cor, proportion_variance, average_congruence_between_male_and_female_targets,no_of_factors) %>% 
+      rename("Mean" = average_robustness,
+             "Orthogonal vs Oblique" = average_squared_cor,
+             "Original vs Ipsatized" = proportion_variance,
+             "Female vs Male targets" = average_congruence_between_male_and_female_targets)
+
+dataMelted <- reshape2::melt(data, id.var='no_of_factors') %>% 
+  dplyr::rename(Indices = variable )
+
+dataMelted
+
+#Final plot used in the manuscript
+plot = dataMelted %>% 
+ggplot(aes(x = factor(no_of_factors), 
+           y = value, group = Indices, 
+           col = Indices, 
+           linetype = Indices, 
+           size = Indices, 
+           fill = Indices)) +
+  geom_line()+ 
+    scale_size_manual(values = c(1.3, .5, .5, .5)) +
+    scale_linetype_manual( values = c(1, 2, 3, 1)) +
+    scale_color_manual(values=c( "black", "black", "black", "black"))+
+  xlab("Number of factors for Candidate models") +
+  ylab("Values") +
+  jtools::theme_apa(legend.pos = "bottomright", 
+                    remove.y.gridlines = FALSE, 
+                    remove.x.gridlines = FALSE, 
+                    legend.font.size = 9) +
+  theme(legend.key.width = unit(0.51,"cm"),
+        legend.key.height=unit(0.4,"cm"),
+        legend.position = c(0.90, 0.08), 
+        title = element_blank(),
+        text=element_text(family="Helvetica"), 
+        legend.background = element_rect(fill = "grey94"))
+
+
+
+
+jpeg(file="robustness_pub.jpg", res=600, width=7600, height=4000, pointsize=10,type="cairo", antialias="subpixel")
+
+  plot
+dev.off()
+```
+

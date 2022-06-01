@@ -1,0 +1,326 @@
+---
+title: "R-squared change for Model comprehensiveness Analysis"
+author: "Vinita Vader"
+format:
+  html:
+    toc: true
+    number-sections: true
+    css: styles.css
+editor: visual
+---
+
+# Set up
+
+```{r message= FALSE, warning=FALSE}
+#install.packages("CCA")
+
+library(tidyverse)
+theme_set(theme_bw(16))
+```
+
+# Analysis - Description
+
+[From the Pre-registration:]{.underline}
+
+*(slight changes -\
+1. 5-factor model instead of 4-factor model\
+2. addition of 32-factor model)*
+
+The one unrotated type-noun factor at block/step 2, those for 5-factors at block/step 3, those for 8 factors at block/step 4, those for 13 factors at block/step 5, and those for 32 factors at block/step 6 with the change in R-squared at each step as the key coefficient to report.
+
+# Code
+
+## Data import
+```{r message= FALSE, warning=FALSE}
+data_big5 <- rio::import(here::here("data", "typenoun.sav"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names() 
+
+#data for the factor scores of 1,5,8,13 and 32 factor candidate models 
+fs_candModels <- rio::import(here::here("data", "typenoun_FSonly1_5_8_13_32.xlsx"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names() %>% 
+  mutate(idx = 1:nrow(.))
+
+#function for fs_candModels data
+select_Vars <- function(varNames){
+  fs_candModels %>% 
+    dplyr::select_at(vars(all_of((varNames))))
+}
+
+#function for data
+select_Vars2 <- function(varNames){
+  data_big5 %>% 
+    dplyr::select_at(vars(all_of((varNames))))
+}
+
+big5_vars <- c("scb5_i", "scb5_ii", "scb5_iii", "scb5_iv", "scb5_v")
+big5 <- select_Vars2(big5_vars) %>% 
+  mutate(idx = 1:nrow(.))
+
+#tibble with all the variables of interest in one 
+all_data <- plyr::join(fs_candModels, big5, type="inner", by = "idx") %>% as_tibble()
+```
+
+## Models to be run
+big5_dimension = fsr1unr1
+big5_dimension = fsr1unr1 + fsr5vx 
+big5_dimension = fsr1unr1 + fsr5vx + fsr8vx 
+big5_dimension = fsr1unr1 + fsr5vx + fsr8vx +fsr13ob
+big5_dimension = fsr1unr1 + fsr5vx + fsr8vx +fsr13ob +fsz32ob
+
+### Step1:Create IVs and DVs 
+```{r}
+
+#create a vectors for names of independent and dependent variables 
+var_names_string <- function(actual_string){
+   extract_no <- str_extract_all({{actual_string}},"\\(?[0-9,.]+\\)?") %>% 
+    unlist() %>% 
+    as.numeric()
+   
+   var_names <- paste0({{actual_string}}, 1:extract_no)
+    var_names %>% unlist()
+}
+
+step_list <- list(
+  step1 <- c("fsr1unr"),
+  
+  step2 <-c("fsr1unr", "fsr5vx"), 
+  
+  step3 <-c("fsr1unr", "fsr5vx", "fsr8vx"),
+  
+  step4 <- c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob"),
+             
+  step5 <- c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob")
+    
+  )
+
+indep <- map_depth(step_list, 2, var_names_string) %>% map(., unlist) 
+
+dep <- c("scb5_i ~", "scb5_ii ~", "scb5_iii ~", "scb5_iv ~", "scb5_v ~")
+
+```
+
+### Setp2: Run models 
+
+```{r message= FALSE, warning=FALSE}
+# function - builds the models to be run and extracts the r-squared values for each model
+run_model<- function(x, y){
+
+  formula <- as.formula(paste(y,paste0(x %>% unlist, collapse="+")))
+ r_squared <-  lm(formula, data = all_data) %>% 
+    summary() %>% 
+   broom::glance() %>% 
+  dplyr::select(r.squared)
+ 
+ output <- list(formula,r_squared)
+ #names(output) <- c("formula", "value")
+ output
+}
+
+#run the models across two lists 
+model_list <- cross2(indep, dep) %>% 
+  invoke_map(run_model, .)
+
+#name the list
+big5_vars <- rep(c("b5_i", "b5_ii", "b5_iii", "b5_iv", "b5_v"), each = 5)
+
+no_string <- rep(c("_1","_2", "_3", "_4", "_5"), times = 5)
+
+list_names <- str_c(big5_vars , no_string)
+
+
+names(model_list) <- list_names
+
+model_list
+```
+
+### Setp3: Table
+```{r}
+r_sq_names <- str_c(list_names, rep(".r.squared", times = 25)) 
+
+r.sq_table <- 
+  
+   # create an r.squared df - retain the second r.squared values from the list above 
+  `[`( model_list %>% unlist, r_sq_names) %>% unlist %>% data.frame() %>% 
+  
+    #data wrangling on the list above 
+  rownames_to_column(var="model") %>% 
+  rename("r_sq"=".") %>% 
+  dplyr::mutate(model = str_extract(model, "^[^\\.]+")) %>% 
+
+  #add the following cols
+tibble(
+  b5_dim = rep(c("Extraversion", "Agreeableness", "Conscientiousness", "Emotional Stability", "Intellect"), each = 5),
+  
+  models_added = rep(c("1-raw-unrt", "5-raw-var", "8-raw-var", "13-raw-ob", "32-ips-ob"), times = 5),
+  
+  all_mods = 
+    rep(c("1", 
+          "1+5",                                        "1+5+8",
+          "1+5+8+13",
+          "1+5+8+13+32"),             
+        times = 5)
+)
+
+r.sq_table
+
+#Write in excel sheet to send 
+#filename <- "/Users/vinitavader/Desktop/Type-noun/data/rSq_table.xlsx"
+
+#rio::export(r.sq_table, check.rows = FALSE, filename)
+
+```
+
+
+
+#### Reactable table
+Cannot make this APA style for the time being
+```{r eval=FALSE}
+library(reactable)
+library(htmltools)
+library(hrbrthemes)
+
+react_data <- r.sq_table %>%
+  dplyr::select(b5_dim, models_added, all_mods, r_sq) %>% 
+  mutate(r_sq = round(r_sq, 3)) 
+
+
+# Render a bar chart with a label on the left
+bar_chart <- function(label, width = "100%", height = "14px", fill = "#696f78", background = NULL) {
+    bar <- div(style = list(background = fill, width = width, height = height))
+    chart <- div(style = list(flexGrow = 1, marginLeft = "6px", background = background), bar)
+   div(style = list(display = "flex", alignItems = "center"), label, chart)
+}
+
+tbl <- reactable(
+  
+  react_data,
+  
+  pagination = FALSE,
+  showSortIcon = FALSE,
+  compact = TRUE,
+  
+  
+  defaultColDef = colDef(
+    
+    headerStyle = list(
+      textAlign = "left",
+      fontSize = "11px",
+      lineHeight = "14px",
+      color = "#0c0c0c",
+      fontWeight = "500",
+      borderBottom = "2px solid #e9edf0",
+      paddingBottom = "3px",
+      verticalAlign = "bottom",
+      fontFamily = font_es),
+    
+   style = list(
+      fontFamily = font_es,
+      fontSize = "11px",
+      verticalAlign = "center",
+      align = "left")
+  ),
+
+  #List all columns
+  
+  columns = list(
+    
+#Col1:
+     b5_dim = colDef(
+         name = "Big 5 dimension"
+      ),
+    
+#Col2:
+     models_added = colDef(
+      name = "Candidate model added"
+    ),
+ 
+#Col3:   
+    all_mods = colDef(
+      name = "All models on the step"
+    ),
+    
+#Col4:   
+    r_sq = colDef(
+      name = "R-squared values",
+      cell = function(value) {
+        # Format as percentages with 1 decimal place
+        value <- paste0(format(round(value * 100, 2), nsmall = 2), "%")
+        bar_chart(value, width = value, fill = "#696f78", background = "#e1e1e1")
+      },
+      # And left-align the columns
+      align = "left",
+       format = colFormat(digits = 1))
+    )
+   
+  )
+)
+
+tbl
+
+```
+
+### Setp4: Plot - table
+
+```{r}
+
+labels <- c("1" = "1 = 1-factor-unrotated", 
+            "1+5" = "1+5 = 1-factor-unrotated + 5-factor-varimax",
+            "1+5+8" = "1+5+8 = 1-factor-unrotated + 5-factor-varimax + \n 8-factor-varimax",
+            "1+5+8+13" = "1+5+8+13 = 1-factor-unrotated + 5-factor-varimax + \n 8-factor-varimax + 13-factor-oblimin",
+           "1+5+8+13+32" = "1+5+8+13+32 = 1-factor-unrotated + 5-factor-varimax +\n 8-factor-varimax + 13-factor-oblimin \n +32-factor-oblimin")
+
+p <- r.sq_table %>% 
+  ggplot(aes(x = all_mods , y = r_sq, fill = all_mods)) +
+  geom_col(alpha = .8, key_glyph = draw_key_blank) + 
+  facet_wrap(~b5_dim, scales='free')+
+  lemon::coord_capped_cart(ylim=c(0,.8))+
+  labs(x = "Models",
+       y = "R-squared values", 
+       fill = "X-axis labels")+
+  scale_fill_manual(values = rep("#8d9096", length(labels)), labels = labels)+
+
+ jtools::theme_apa(
+ remove.y.gridlines = FALSE,
+ remove.x.gridlines = FALSE)+
+   theme(text=element_text(family="Helvetica"),
+        axis.text.x=element_text(size = 4.5), 
+        legend.key = element_rect(fill = NA, color = NA),
+        legend.key.width = unit(.5, "cm"),
+        legend.spacing.y = unit(1, "cm"),
+        legend.key.height= unit(.6, "cm"),
+        legend.position = c(.84, .28),
+        legend.text=element_text(size=5))
+p
+
+```
+
+
+
+```{r eval=FALSE, include=FALSE}
+# Found a better way of creating this list with map_depth
+indep <- list(
+  step1 <- var_names_string("fsr1unr"),
+  
+  step2 <- map(c("fsr1unr", "fsr5vx"), var_names_string) %>% unlist(), 
+  
+  step3 <-map(c("fsr1unr", "fsr5vx", "fsr8vx"), var_names_string) %>% unlist(),
+  
+  step4 <- map(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob"), var_names_string) %>% unlist(), 
+             
+  step5 <- map(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), var_names_string) %>% unlist()
+    
+  )
+
+
+#Found a better way of runnning over all elements in both lists with cross2
+models <- lapply(dep, function(x, y)
+    step(lm(as.formula(paste(y, paste(x, collapse="+"))), data=all_data), 
+         direction="backward"), y = dep)
+
+models <- lapply(dep, function(x, y)
+    step(lm(as.formula(paste(x, paste(y, collapse="+"))), data=mtcars), 
+         direction="backward"), y = indep)
+```
+
