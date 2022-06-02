@@ -31,6 +31,7 @@ The one unrotated type-noun factor at block/step 2, those for 5-factors at block
 # Code
 
 ## Data import
+
 ```{r message= FALSE, warning=FALSE}
 data_big5 <- rio::import(here::here("data", "typenoun.sav"), setclass = "tbl_df") %>% 
   rio::characterize() %>% 
@@ -63,13 +64,11 @@ all_data <- plyr::join(fs_candModels, big5, type="inner", by = "idx") %>% as_tib
 ```
 
 ## Models to be run
-big5_dimension = fsr1unr1
-big5_dimension = fsr1unr1 + fsr5vx 
-big5_dimension = fsr1unr1 + fsr5vx + fsr8vx 
-big5_dimension = fsr1unr1 + fsr5vx + fsr8vx +fsr13ob
-big5_dimension = fsr1unr1 + fsr5vx + fsr8vx +fsr13ob +fsz32ob
 
-### Step1:Create IVs and DVs 
+big5_dimension = fsr1unr1 big5_dimension = fsr1unr1 + fsr5vx big5_dimension = fsr1unr1 + fsr5vx + fsr8vx big5_dimension = fsr1unr1 + fsr5vx + fsr8vx +fsr13ob big5_dimension = fsr1unr1 + fsr5vx + fsr8vx +fsr13ob +fsz32ob
+
+### Step1:Create IVs and DVs
+
 ```{r}
 
 #create a vectors for names of independent and dependent variables 
@@ -101,7 +100,7 @@ dep <- c("scb5_i ~", "scb5_ii ~", "scb5_iii ~", "scb5_iv ~", "scb5_v ~")
 
 ```
 
-### Setp2: Run models 
+### Setp2: Run models
 
 ```{r message= FALSE, warning=FALSE}
 # function - builds the models to be run and extracts the r-squared values for each model
@@ -136,6 +135,7 @@ model_list
 ```
 
 ### Setp3: Table
+
 ```{r}
 r_sq_names <- str_c(list_names, rep(".r.squared", times = 25)) 
 
@@ -163,8 +163,7 @@ tibble(
         times = 5)
 )
 
-r.sq_table
-
+r.sq_table %>% print(n = nrow(.))
 #Write in excel sheet to send 
 #filename <- "/Users/vinitavader/Desktop/Type-noun/data/rSq_table.xlsx"
 
@@ -172,11 +171,11 @@ r.sq_table
 
 ```
 
-
-
 #### Reactable table
+
 Cannot make this APA style for the time being
-```{r eval=FALSE}
+
+```{r message=FALSE, warning=FALSE}
 library(reactable)
 library(htmltools)
 library(hrbrthemes)
@@ -206,8 +205,8 @@ tbl <- reactable(
     
     headerStyle = list(
       textAlign = "left",
-      fontSize = "11px",
-      lineHeight = "14px",
+      fontSize = "14px",
+      lineHeight = "15px",
       color = "#0c0c0c",
       fontWeight = "500",
       borderBottom = "2px solid #e9edf0",
@@ -217,7 +216,7 @@ tbl <- reactable(
     
    style = list(
       fontFamily = font_es,
-      fontSize = "11px",
+      fontSize = "12px",
       verticalAlign = "center",
       align = "left")
   ),
@@ -255,7 +254,7 @@ tbl <- reactable(
     )
    
   )
-)
+
 
 tbl
 
@@ -296,8 +295,6 @@ p
 
 ```
 
-
-
 ```{r eval=FALSE, include=FALSE}
 # Found a better way of creating this list with map_depth
 indep <- list(
@@ -313,7 +310,6 @@ indep <- list(
     
   )
 
-
 #Found a better way of runnning over all elements in both lists with cross2
 models <- lapply(dep, function(x, y)
     step(lm(as.formula(paste(y, paste(x, collapse="+"))), data=all_data), 
@@ -323,4 +319,3 @@ models <- lapply(dep, function(x, y)
     step(lm(as.formula(paste(x, paste(y, collapse="+"))), data=mtcars), 
          direction="backward"), y = indep)
 ```
-
