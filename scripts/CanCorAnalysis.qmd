@@ -1,0 +1,135 @@
+---
+title: "Canonical correlation analysis - Big 5 and Candidate models "
+author: "Vinita Vader"
+format:
+  html:
+    toc: true
+    number-sections: true
+    css: styles.css
+editor: visual
+---
+
+# Set up
+
+```{r message= FALSE, warning=FALSE}
+#install.packages("CCA")
+
+library(CCA)
+library(tidyverse)
+theme_set(theme_bw(16))
+```
+
+# Analysis - Description
+
+[From the Pre-registration:]{.underline}
+
+As a complement, we will examine a more parsimonious method for investigating overlap of these variable sets, via proportion of variance accounted for in a Set 2 (a grouping of these external/etic variables, e.g., the Big Five as one set) by a Set 1 (either the 1, 5 8, or 13-factor model from the 372 type-nouns, based on factor scores).
+
+# Code
+
+## Data import
+
+```{r message= FALSE, warning=FALSE}
+
+#data with all fs and type-nouns 
+data_big5 <- rio::import(here::here("data", "typenoun.sav"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names()
+
+#data for the factor scores of 1,5,8,13 and 32 factor candidate models 
+fs_candModels <- rio::import(here::here("data", "typenoun_FSonly1_5_8_13_32.xlsx"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names()
+
+#function for fs_candModels data
+select_Vars <- function(varNames){
+  fs_candModels %>% 
+    dplyr::select_at(vars(all_of((varNames))))
+}
+
+#function for data
+select_Vars2 <- function(varNames){
+  data_big5 %>% 
+    dplyr::select_at(vars(all_of((varNames))))
+}
+```
+
+## Function - Prop. of Var
+
+```{r message= FALSE, warning=FALSE}
+prop_var_btwSets <- function(set1, set2){
+  library(CCA)
+  #set the number of rows for final table
+    #compare the number of variables 
+  #in two sets and retain the value of the minimum number of variables - 
+  #this is the value for the number of rows in the 
+  #final table and those for the number of cols to be retained in the intermediary steps
+    cc_comp <- cc(set1,set2)
+    set1_vars <- nrow(data.frame(cc_comp$names[1]))
+    set2_vars <- nrow(data.frame(cc_comp$names[2]))
+    n_rows <- min(set1_vars,set2_vars)
+    
+    
+   cc_results <- cancor(set1,set2)
+   scores_cc <- comput(set1, set2, cc_results)
+   
+   #$scores$corr.X.xscores = Set 1 canonical loadings
+   set1_by_self <- (scores_cc$corr.X.xscores)^2  %>%
+                  as_tibble %>% 
+                  dplyr::select(1:all_of(n_rows)) %>% 
+                  map_dbl(.,mean)
+   
+   #$scores$corr.X.yscores = Set 1 cross loadings
+   set1_by_set2 <- (scores_cc$corr.X.yscores)^2  %>%
+                  as_tibble %>% 
+                  dplyr::select(1:all_of(n_rows)) %>% 
+                  map_dbl(.,mean)
+   
+   #$scores$corr.Y.yscores = Set 2 canonical loadings
+   set2_by_self <- (scores_cc$corr.Y.yscores)^2  %>%
+                  as_tibble %>% 
+                  dplyr::select(1:all_of(n_rows)) %>% 
+                  map_dbl(.,mean)
+   
+   #$scores$corr.Y.xscores = Set 2 cross loadings
+   set2_by_set1 <- (scores_cc$corr.Y.xscores)^2  %>%
+                  as_tibble %>% 
+                  dplyr::select(1:all_of(n_rows)) %>% 
+                  map_dbl(.,mean)
+   
+   tibble(set1_by_self,set1_by_set2,set2_by_self,set2_by_set1)
+
+}
+```
+
+## Creating lists
+
+```{r message= FALSE, warning=FALSE}
+#creating set1 list
+big5_vars <- c("scb5_i", "scb5_ii", "scb5_iii", "scb5_iv", "scb5_v")
+big5 <- select_Vars2(big5_vars)
+
+big5_list <- list(
+  big5,big5,big5,big5,big5
+)
+
+#creating set2 list
+fs_var_names <- list(
+  var_1 <- "fsr1unr1",
+  var_5 <- paste0("fsr5vx", 1:5),
+  var_8 <- paste0("fsr8vx", 1:8),
+  var_13 <- paste0("fsr13ob", 1:13),
+  var_32 <- paste0("fsz32ob", 1:32)
+)
+fs_all_models <- map(fs_var_names,select_Vars)
+
+#arguments set1:big5 and set2:candidate models list
+args <- list(big5_list,fs_all_models)
+
+#mapping through both the arguments 
+final_list <- pmap(args, prop_var_btwSets)
+names(final_list) <- c("big5_fsr1unr1","big5_fsr5vx", "big5_fsr8vx", "big5_fsr13ob", "big5_fsz32ob")
+
+
+final_list
+```
