@@ -1,0 +1,301 @@
+---
+title: "Correlations between Candidate Models and previously established Models"
+author: "Vinita Vader"
+format:
+  html:
+    toc: true
+    number-sections: true
+    css: styles.css
+editor: visual
+---
+
+# Addendum 1
+
+We will generate correlations matrices showing the relation to the 1, 5, 8, and 13-factor models' variables to the following 'external/etic variables': the Dutch and the German type-noun factors, the Big Five, Big Three, Big Two, and Big One structures as well the Multi-Language Seven set.
+
+# Import data
+```{r message=FALSE,warning=FALSE}
+library(tidyverse)
+#data with all fs and type-nouns 
+data <- rio::import(here::here("data", "typenoun.sav"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names()
+
+#data.frame(names(data)) %>% View
+
+#data for the factor scores of 1,5,8,13 and 32 factor candidate models 
+fs_candModels <- rio::import(here::here("data", "typenoun_FSonly1_5_8_13_32.xlsx"), setclass = "tbl_df") %>% 
+  rio::characterize() %>% 
+  janitor::clean_names()
+
+```
+
+# Functions
+```{r}
+#function for fs_candModels data
+select_Vars <- function(varNames){
+  fs_candModels %>% 
+    dplyr::select_at(vars(all_of((varNames))))
+}
+
+#function for calling data for etic vars
+select_Vars2 <- function(varNames){
+  data %>% 
+    dplyr::select_at(vars(all_of((varNames))))
+}
+
+#creating dataframes for etic vars
+create_df <- function(string, no_vars){
+  var_string <- c(paste0({{string}}, 1:no_vars))
+  df <- select_Vars2(var_string)
+  df
+}
+
+#correlation across lists 
+all_corr_mats <- function(etic_list){
+  cross2(list_fs, etic_list) %>% 
+   invoke_map(cor, .) %>% 
+   map(., as_tibble, rownames = "cand_model") 
+  
+}
+```
+
+# Emic variables 
+```{r}
+var_names_string <- function(actual_string){
+   extract_no <- str_extract_all({{actual_string}},"\\(?[0-9,.]+\\)?") %>% 
+    unlist() %>% 
+    as.numeric()
+   
+   var_names <- paste0({{actual_string}}, 1:extract_no)
+    var_names
+}
+
+
+#build a list with all fs of candidate models 
+cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"))
+
+fs_var_names <- map(cand_model_names, var_names_string)
+
+list_fs <- fs_var_names %>% 
+ purrr::map(select_Vars)
+
+
+```
+
+# Etic variables 
+### German
+**German male-target factors**  
+M1 - Weakling, Sissy, Chicken, Coward, Softy  
+M2 - Smart-aleck, Wise-guy, Pain-in-the-neck, Liar, Loudmouth  
+M3 - Thinker, Intellectual, Genius, Egghead, Quick-thinker  
+M4 - Joker, Clown, Comedian, Life-of-the-party, Jester  |
+M5 - Ladies'-man, Lady-killer, Playboy, Stud, Womanizer 
+M6 - Recluse, Loner, Skeptic,  Nag, Individual  
+M7 - Stickler, Careerist, Born-fighter, High-flier  
+
+```{r}
+german_man_df <- create_df("sc_gm", 7)
+```
+
+**German female-target factors ** 
+F1 - Loudmouth, Nag, Nuisance, Pest, Pain-in-the-neck 
+F2 - Thinker, Authority, Intellectual, Egghead, Quick-thinker 
+F3 - Joker, Comedian, Life-of-the-party, Pal 
+F4 - Conservative, Bore, Sleephead, Coward, Hanger-on 
+F5 - Pessimist, Chicken, Dreamer, Daydreamer, Skeptic 
+F6 - Beauty, Careerist, Materialist, Sex-object, Fashion-plate
+```{r}
+german_woman_df <- create_df("sc_gw", 6) 
+```
+
+
+```{r}
+german_list<- list(german_man_df, german_woman_df)
+
+german_cors <- all_corr_mats(german_list)
+
+#sheet names
+cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), times = 2)
+
+mw_string <- rep(c("_m","_w"), each = 5)
+
+names(german_cors) <- str_c(cand_model_names , mw_string)
+
+german_cors
+```
+
+```{r eval=FALSE}
+#Write in excel sheet to send 
+export_list <- function(list_name){
+  filename <- paste0("/Users/vinitavader/Desktop/EnglishTypeNoun-Lexical-Study/data/etic_vars_cor/",{{list_name}},".xlsx")
+  
+  rio::export(eval(parse(text = {{list_name}})), check.rows = FALSE, filename)
+}
+
+export_list("german_cors") 
+```
+
+### Dutch
+**Dutch self factors** 
+Malignity - Cheater, Monster, Arch-villain, False-friend 
+Anxiety - Chicken, Scaredy-cat, Coward, Bore 
+Extraversion - Boaster, Merrymaker, Chatterer, Chatterbox 
+Culture - Strategist, Philosopher, Thinker, Intellectual 
+Antagonism - Troublemaker, Nuisance, Obstructionist, Oppositionalist 
+Perseverance - Go-getter, Worker, Workhorse 
+Materialism - Capitalist, Leader, Authority, Boss
+```{r}
+dutch_self_df <- create_df("sc_ds", 7) 
+```
+
+**Dutch-partner factors** 
+Malignity - Monster, Moron, Vandal, Pain-in-the-neck 
+Extraversion - Clown, Comedian, Merrymaker 
+Anxiety - Scaredy-cat, Worrywart, Coward, Chicken Antagonism - Know-it-all, Oppositionalist, Obstructionist 
+Culture - Philosopher, Poet, Intellectual, Anarchist 
+Perseverance - Go-getter, Fighter, Worker, Workhorse 
+Colourlessness - Stoic, Pragmatist, Chameleon, Softy
+
+```{r}
+dutch_peer_df <- create_df("sc_dp", 7) 
+```
+
+```{r}
+dutch_list<- list(dutch_self_df, dutch_peer_df)
+
+dutch_cors <- all_corr_mats(dutch_list)
+
+#sheet names
+cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), times = 2)
+
+sp_string <- rep(c("_s","_p"), each = 5)
+
+names(dutch_cors) <- str_c(cand_model_names , sp_string)
+
+dutch_cors
+```
+
+```{r eval=FALSE}
+#Write in excel sheet to send 
+export_list("dutch_cors") 
+```
+
+### Big 5 
+**Big Five factors** 
+Extraversion - Bold, Talkative, Sociable versus Bashful, Shy, Timid Agreeableness - Warm, Tolerant, Lenient versus Harsh, Stern, Cruel, Sly 
+Conscientiousness - Organized, Logical, Firm versus Disorganized, Unsystematic, Scatterbrained 
+Emotional Stability - Anxious, Fearful, Emotional, Jealous Intellect - Philosophical, Complex, Clever, Unconventional versus Conventional, Traditional, Unreflective
+
+```{r}
+big5_var<- c("scb5_i","scb5_ii","scb5_iii","scb5_iv","scb5_v")
+big5_df <- select_Vars2(big5_var)
+
+#cor_mat
+big5_cors <- all_corr_mats(big5_df)
+
+#sheet names
+cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), times = 5)
+
+big5_string <- rep(c("_ext","_agr", "_consc", "_es", "_intl"), each = 5)
+
+names(big5_cors) <- str_c(cand_model_names , big5_string)
+
+big5_cors
+```
+
+```{r eval=FALSE}
+#Write in excel sheet to send 
+export_list("big5_cors") 
+```
+
+### Multilanguage
+**Multi-Language Seven factors** 
+Gregariousness - Talkative, Sociable, Comical, Expressive versus Shy, Bashful 
+Self-Assurance - Bold, Masculine, Firm versus Fearful, Anxious, Timid 
+Even Temper - Patient versus Irritable, Harsh, Jealous, Emotional Concern for Others - Warm, Courteous, Tolerant versus Cruel, Egotistical 
+Conscientiousness - Organized, Stern, Thrifty versus Disorganized, Unsystematic 
+Originality/Virtuosity - Philosophical, Clever, Complex versus Unreflective  
+Negative Valence - Corrupt, Evil, Good-for-nothing
+```{r}
+ml_var <-c(str_subset(names(data), pattern="scml"),              str_subset(names(data), pattern="sc_nval")) %>%
+  #remove attraction var, it is an add on
+         str_subset(pattern = "scml7att", negate = TRUE) 
+
+ml_df <- select_Vars2(ml_var)
+#cor_mat
+ml_cors <- all_corr_mats(ml_df)
+```
+
+```{r}
+#sheet names
+cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), times = 7)
+
+ml_string <- rep(c("_gr","_sa", "_tmp", "_cfo", "_con", "_int", "_nval"), each = 5)
+
+names(ml_cors) <- str_c(cand_model_names , ml_string)
+
+ml_cors
+```
+
+```{r eval=FALSE}
+#Write in excel sheet to send 
+export_list("ml_cors") 
+```
+
+### Big 1
+**Big One factors**
+Responsible, Patient, Warm, Clever, Sociable versus Cruel, Irritable, Disorganized, Corrupt, Dishonest
+```{r}
+big1_var <-str_subset(names(data), pattern="scb1")
+
+big1_df <- select_Vars2(big1_var)
+
+#cor_mat
+big1_cors <- all_corr_mats(big1_df)
+```
+
+```{r}
+#sheet names
+cand_model_names <- c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob")
+
+big1_string <- rep(c("_scb1.sd"), times =5)
+
+names(big1_cors) <- str_c(cand_model_names , big1_string)
+
+big1_cors
+```
+
+```{r eval=FALSE}
+#Write in excel sheet to send 
+export_list("big1_cors") 
+```
+### Big 2
+
+**Big Two factors**  Morality and Social Propriety - Courteous, Patient, Tolerant, Responsible versus Cruel, Harsh, Irritable, Reckless, Corrupt, Egotistical  Dynamism/Dominance/Deference - Expressive, Talkative, Bold, Clever, Sociable, Humorous, Good-looking versus Timid, Dull, Bashful
+```{r}
+big2_var <-str_subset(names(data), pattern="scb2") %>% 
+             str_subset(pattern="10")
+
+big2_df <- select_Vars2(big2_var)
+
+#cor_mat
+big2_cors <- all_corr_mats(big2_df)
+```
+
+
+```{r}
+#sheet names
+cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), times = 2)
+
+big2_string <- rep(c("_scb2.s10","_scb2.d10"), each = 5)
+
+names(big2_cors) <- str_c(cand_model_names , big2_string)
+
+big2_cors
+```
+
+```{r eval=FALSE}
+#Write in excel sheet to send 
+export_list("big2_cors") 
+```

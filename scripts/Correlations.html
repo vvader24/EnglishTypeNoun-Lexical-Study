@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.388">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vinita Vader">
+
+<title>Correlations between Candidate Models and previously established Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="Correlations_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Correlations_files/libs/quarto-html/quarto.js"></script>
+<script src="Correlations_files/libs/quarto-html/popper.min.js"></script>
+<script src="Correlations_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Correlations_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Correlations_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="Correlations_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="Correlations_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Correlations_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Correlations_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#addendum-1" id="toc-addendum-1" class="nav-link active" data-scroll-target="#addendum-1"> <span class="header-section-number">1</span> Addendum 1</a></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data"> <span class="header-section-number">2</span> Import data</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions"> <span class="header-section-number">3</span> Functions</a></li>
+  <li><a href="#emic-variables" id="toc-emic-variables" class="nav-link" data-scroll-target="#emic-variables"> <span class="header-section-number">4</span> Emic variables</a></li>
+  <li><a href="#etic-variables" id="toc-etic-variables" class="nav-link" data-scroll-target="#etic-variables"> <span class="header-section-number">5</span> Etic variables</a>
+  <ul class="collapse">
+  <li><a href="#german" id="toc-german" class="nav-link" data-scroll-target="#german"> <span class="header-section-number">5.0.1</span> German</a></li>
+  <li><a href="#dutch" id="toc-dutch" class="nav-link" data-scroll-target="#dutch"> <span class="header-section-number">5.0.2</span> Dutch</a></li>
+  <li><a href="#big-5" id="toc-big-5" class="nav-link" data-scroll-target="#big-5"> <span class="header-section-number">5.0.3</span> Big 5</a></li>
+  <li><a href="#multilanguage" id="toc-multilanguage" class="nav-link" data-scroll-target="#multilanguage"> <span class="header-section-number">5.0.4</span> Multilanguage</a></li>
+  <li><a href="#big-1" id="toc-big-1" class="nav-link" data-scroll-target="#big-1"> <span class="header-section-number">5.0.5</span> Big 1</a></li>
+  <li><a href="#big-2" id="toc-big-2" class="nav-link" data-scroll-target="#big-2"> <span class="header-section-number">5.0.6</span> Big 2</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Correlations between Candidate Models and previously established Models</h1>
+</div>
+
+
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vinita Vader </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="addendum-1" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Addendum 1</h1>
+<p>We will generate correlations matrices showing the relation to the 1, 5, 8, and 13-factor models’ variables to the following ‘external/etic variables’: the Dutch and the German type-noun factors, the Big Five, Big Three, Big Two, and Big One structures as well the Multi-Language Seven set.</p>
+</section>
+<section id="import-data" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Import data</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#data with all fs and type-nouns </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"typenoun.sav"</span>), <span class="at">setclass =</span> <span class="st">"tbl_df"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  rio<span class="sc">::</span><span class="fu">characterize</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#data.frame(names(data)) %&gt;% View</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#data for the factor scores of 1,5,8,13 and 32 factor candidate models </span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>fs_candModels <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"typenoun_FSonly1_5_8_13_32.xlsx"</span>), <span class="at">setclass =</span> <span class="st">"tbl_df"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  rio<span class="sc">::</span><span class="fu">characterize</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="functions" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Functions</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#function for fs_candModels data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>select_Vars <span class="ot">&lt;-</span> <span class="cf">function</span>(varNames){</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  fs_candModels <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select_at</span>(<span class="fu">vars</span>(<span class="fu">all_of</span>((varNames))))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#function for calling data for etic vars</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>select_Vars2 <span class="ot">&lt;-</span> <span class="cf">function</span>(varNames){</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select_at</span>(<span class="fu">vars</span>(<span class="fu">all_of</span>((varNames))))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#creating dataframes for etic vars</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>create_df <span class="ot">&lt;-</span> <span class="cf">function</span>(string, no_vars){</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  var_string <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">paste0</span>({{string}}, <span class="dv">1</span><span class="sc">:</span>no_vars))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">select_Vars2</span>(var_string)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  df</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#correlation across lists </span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>all_corr_mats <span class="ot">&lt;-</span> <span class="cf">function</span>(etic_list){</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cross2</span>(list_fs, etic_list) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>   <span class="fu">invoke_map</span>(cor, .) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>   <span class="fu">map</span>(., as_tibble, <span class="at">rownames =</span> <span class="st">"cand_model"</span>) </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="emic-variables" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Emic variables</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>var_names_string <span class="ot">&lt;-</span> <span class="cf">function</span>(actual_string){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   extract_no <span class="ot">&lt;-</span> <span class="fu">str_extract_all</span>({{actual_string}},<span class="st">"</span><span class="sc">\\</span><span class="st">(?[0-9,.]+</span><span class="sc">\\</span><span class="st">)?"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   var_names <span class="ot">&lt;-</span> <span class="fu">paste0</span>({{actual_string}}, <span class="dv">1</span><span class="sc">:</span>extract_no)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    var_names</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#build a list with all fs of candidate models </span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>cand_model_names <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>, <span class="st">"fsz32ob"</span>))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>fs_var_names <span class="ot">&lt;-</span> <span class="fu">map</span>(cand_model_names, var_names_string)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>list_fs <span class="ot">&lt;-</span> fs_var_names <span class="sc">%&gt;%</span> </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a> purrr<span class="sc">::</span><span class="fu">map</span>(select_Vars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="etic-variables" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Etic variables</h1>
+<section id="german" class="level3" data-number="5.0.1">
+<h3 data-number="5.0.1" class="anchored" data-anchor-id="german"><span class="header-section-number">5.0.1</span> German</h3>
+<p><strong>German male-target factors</strong><br>
+M1 - Weakling, Sissy, Chicken, Coward, Softy<br>
+M2 - Smart-aleck, Wise-guy, Pain-in-the-neck, Liar, Loudmouth<br>
+M3 - Thinker, Intellectual, Genius, Egghead, Quick-thinker<br>
+M4 - Joker, Clown, Comedian, Life-of-the-party, Jester | M5 - Ladies’-man, Lady-killer, Playboy, Stud, Womanizer M6 - Recluse, Loner, Skeptic, Nag, Individual<br>
+M7 - Stickler, Careerist, Born-fighter, High-flier</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>german_man_df <span class="ot">&lt;-</span> <span class="fu">create_df</span>(<span class="st">"sc_gm"</span>, <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>German female-target factors </strong> F1 - Loudmouth, Nag, Nuisance, Pest, Pain-in-the-neck F2 - Thinker, Authority, Intellectual, Egghead, Quick-thinker F3 - Joker, Comedian, Life-of-the-party, Pal F4 - Conservative, Bore, Sleephead, Coward, Hanger-on F5 - Pessimist, Chicken, Dreamer, Daydreamer, Skeptic F6 - Beauty, Careerist, Materialist, Sex-object, Fashion-plate</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>german_woman_df <span class="ot">&lt;-</span> <span class="fu">create_df</span>(<span class="st">"sc_gw"</span>, <span class="dv">6</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>german_list<span class="ot">&lt;-</span> <span class="fu">list</span>(german_man_df, german_woman_df)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>german_cors <span class="ot">&lt;-</span> <span class="fu">all_corr_mats</span>(german_list)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#sheet names</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>cand_model_names <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>, <span class="st">"fsz32ob"</span>), <span class="at">times =</span> <span class="dv">2</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>mw_string <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"_m"</span>,<span class="st">"_w"</span>), <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(german_cors) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(cand_model_names , mw_string)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>german_cors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fsr1unr_m
+# A tibble: 1 × 8
+  cand_model sc_gm1 sc_gm2 sc_gm3  sc_gm4 sc_gm5 sc_gm6 sc_gm7
+  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 fsr1unr1    0.506  0.748 -0.311 -0.0112  0.257  0.300  0.156
+
+$fsr5vx_m
+# A tibble: 5 × 8
+  cand_model  sc_gm1 sc_gm2  sc_gm3  sc_gm4 sc_gm5 sc_gm6  sc_gm7
+  &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1 fsr5vx1     0.626   0.640 -0.159  -0.0911 0.170   0.451  0.279 
+2 fsr5vx2     0.125  -0.231  0.661   0.256  0.0171  0.445  0.467 
+3 fsr5vx3    -0.276   0.176  0.232   0.380  0.766  -0.111  0.263 
+4 fsr5vx4    -0.0438  0.154  0.0948  0.356  0.0766  0.228 -0.0186
+5 fsr5vx5    -0.0149  0.378 -0.0429  0.421  0.201  -0.144  0.170 
+
+$fsr8vx_m
+# A tibble: 8 × 8
+  cand_model   sc_gm1   sc_gm2  sc_gm3  sc_gm4  sc_gm5  sc_gm6  sc_gm7
+  &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 fsr8vx1     0.522    0.597   -0.241  -0.0128  0.243   0.283   0.187 
+2 fsr8vx2    -0.00196 -0.135    0.683   0.234   0.0565  0.509   0.488 
+3 fsr8vx3     0.162    0.475    0.0818 -0.0889  0.0575  0.365   0.276 
+4 fsr8vx4    -0.192    0.150    0.205   0.359   0.762  -0.0684  0.194 
+5 fsr8vx5    -0.167    0.128   -0.0665  0.153   0.108   0.0591 -0.159 
+6 fsr8vx6     0.0606  -0.0424   0.0541  0.0896  0.234  -0.104   0.147 
+7 fsr8vx7    -0.0994   0.345    0.0457  0.680   0.0618 -0.124   0.131 
+8 fsr8vx8     0.394   -0.00878  0.0571  0.128  -0.123   0.319  -0.0220
+
+$fsr13ob_m
+# A tibble: 13 × 8
+   cand_model   sc_gm1 sc_gm2  sc_gm3   sc_gm4  sc_gm5   sc_gm6  sc_gm7
+   &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+ 1 fsr13ob1    0.274    0.587 -0.244  -0.0391   0.323   0.0447   0.128 
+ 2 fsr13ob2   -0.00235 -0.123  0.777   0.204    0.183   0.348    0.463 
+ 3 fsr13ob3    0.0688  -0.213 -0.136  -0.385   -0.775   0.0339  -0.111 
+ 4 fsr13ob4    0.302    0.526  0.0594  0.00972  0.0376  0.568    0.369 
+ 5 fsr13ob5    0.237    0.333 -0.0677 -0.0610   0.147   0.247    0.277 
+ 6 fsr13ob6   -0.0393  -0.188  0.282   0.205    0.251   0.00147  0.259 
+ 7 fsr13ob7    0.0258   0.452  0.141   0.713    0.202  -0.0555   0.214 
+ 8 fsr13ob8    0.165    0.399 -0.116   0.200    0.275   0.180    0.0244
+ 9 fsr13ob9   -0.682   -0.254  0.213   0.276    0.128  -0.157    0.197 
+10 fsr13ob10  -0.273   -0.362 -0.0472 -0.124   -0.112  -0.501   -0.256 
+11 fsr13ob11  -0.141   -0.220  0.141   0.0989  -0.204  -0.00213 -0.185 
+12 fsr13ob12  -0.130    0.317 -0.360  -0.195    0.140  -0.252   -0.139 
+13 fsr13ob13  -0.513   -0.313  0.0443 -0.0682  -0.0672 -0.259   -0.213 
+
+$fsz32ob_m
+# A tibble: 32 × 8
+   cand_model   sc_gm1   sc_gm2   sc_gm3   sc_gm4  sc_gm5  sc_gm6   sc_gm7
+   &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+ 1 fsz32ob1    0.139    0.399   -0.0504   0.0897   0.281   0.142   0.156  
+ 2 fsz32ob2    0.124   -0.0505  -0.0521  -0.205   -0.811   0.141  -0.00470
+ 3 fsz32ob3    0.128    0.0576  -0.0681  -0.135   -0.0388  0.421  -0.0702 
+ 4 fsz32ob4   -0.00423 -0.00436 -0.0738  -0.120    0.0707 -0.140   0.0299 
+ 5 fsz32ob5    0.209    0.311   -0.311   -0.00442  0.0694 -0.0939 -0.0110 
+ 6 fsz32ob6    0.177   -0.0296  -0.165   -0.751   -0.119   0.139   0.0320 
+ 7 fsz32ob7    0.192    0.194   -0.00173  0.0298   0.0520  0.295   0.101  
+ 8 fsz32ob8   -0.249   -0.400    0.0245  -0.00368 -0.163  -0.288  -0.349  
+ 9 fsz32ob9    0.679   -0.0239  -0.102   -0.263   -0.186   0.0882 -0.175  
+10 fsz32ob10  -0.205   -0.0422   0.0190   0.0426  -0.0452 -0.0409 -0.0627 
+# … with 22 more rows
+
+$fsr1unr_w
+# A tibble: 1 × 7
+  cand_model sc_gw1 sc_gw2 sc_gw3 sc_gw4 sc_gw5 sc_gw6
+  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 fsr1unr1    0.838 -0.253 -0.389  0.595  0.252 0.0348
+
+$fsr5vx_w
+# A tibble: 5 × 7
+  cand_model  sc_gw1  sc_gw2 sc_gw3  sc_gw4  sc_gw5  sc_gw6
+  &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 fsr5vx1     0.806  -0.0879 -0.422  0.706   0.396   0.118 
+2 fsr5vx2    -0.217   0.677   0.393  0.0876  0.397   0.385 
+3 fsr5vx3    -0.0625  0.250   0.284 -0.134  -0.331   0.0713
+4 fsr5vx4     0.0465  0.0398  0.262 -0.0769  0.176  -0.150 
+5 fsr5vx5     0.225   0.0120  0.382 -0.0360  0.0156  0.565 
+
+$fsr8vx_w
+# A tibble: 8 × 7
+  cand_model   sc_gw1  sc_gw2 sc_gw3    sc_gw4  sc_gw5  sc_gw6
+  &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 fsr8vx1     0.753   -0.193  -0.366  0.577     0.226   0.0622
+2 fsr8vx2    -0.119    0.688   0.282 -0.0145    0.285   0.201 
+3 fsr8vx3     0.394    0.157  -0.167  0.278     0.297   0.215 
+4 fsr8vx4    -0.136    0.215   0.310 -0.0336   -0.195   0.0495
+5 fsr8vx5    -0.0235  -0.136   0.112 -0.177     0.0272 -0.139 
+6 fsr8vx6    -0.0890   0.0497  0.211  0.000731  0.0730  0.708 
+7 fsr8vx7     0.207    0.104   0.553 -0.129    -0.0577  0.118 
+8 fsr8vx8    -0.00772  0.0471  0.156  0.370     0.524  -0.0214
+
+$fsr13ob_w
+# A tibble: 13 × 7
+   cand_model  sc_gw1  sc_gw2  sc_gw3   sc_gw4  sc_gw5  sc_gw6
+   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 fsr13ob1    0.595  -0.195  -0.303   0.325    0.0645  0.279 
+ 2 fsr13ob2   -0.193   0.754   0.266  -0.0648   0.123   0.251 
+ 3 fsr13ob3    0.0348 -0.117  -0.259   0.00840  0.147   0.0512
+ 4 fsr13ob4    0.491   0.165  -0.107   0.498    0.510   0.202 
+ 5 fsr13ob5    0.466   0.0142 -0.241   0.308    0.0942  0.0177
+ 6 fsr13ob6   -0.254   0.270   0.393  -0.119    0.0833  0.688 
+ 7 fsr13ob7    0.286   0.189   0.568  -0.0539   0.0169  0.257 
+ 8 fsr13ob8    0.309  -0.125   0.0219  0.259    0.194  -0.0162
+ 9 fsr13ob9   -0.432   0.269   0.429  -0.443   -0.331   0.0919
+10 fsr13ob10  -0.484  -0.0676  0.110  -0.309   -0.358  -0.0175
+11 fsr13ob11  -0.287   0.0409  0.189  -0.370   -0.0251 -0.139 
+12 fsr13ob12   0.295  -0.375  -0.346  -0.115   -0.443  -0.133 
+13 fsr13ob13  -0.453   0.0175  0.153  -0.521   -0.229  -0.157 
+
+$fsz32ob_w
+# A tibble: 32 × 7
+   cand_model  sc_gw1    sc_gw2  sc_gw3 sc_gw4  sc_gw5   sc_gw6
+   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+ 1 fsz32ob1    0.361   0.000262 -0.0869  0.234  0.148   0.0261 
+ 2 fsz32ob2    0.128  -0.00426  -0.170   0.183  0.234   0.00388
+ 3 fsz32ob3    0.123  -0.0960   -0.210   0.214  0.182  -0.151  
+ 4 fsz32ob4    0.0170 -0.00890  -0.107   0.224 -0.0795  0.00621
+ 5 fsz32ob5    0.402  -0.288    -0.201   0.218 -0.126  -0.144  
+ 6 fsz32ob6    0.214  -0.154    -0.699   0.237  0.0804  0.0813 
+ 7 fsz32ob7    0.392  -0.0426   -0.140   0.224  0.216  -0.0180 
+ 8 fsz32ob8   -0.392  -0.0597    0.128  -0.389 -0.246  -0.217  
+ 9 fsz32ob9    0.172  -0.136    -0.301   0.307  0.290  -0.0567 
+10 fsz32ob10  -0.0967 -0.0135    0.0976 -0.178  0.0752 -0.0820 
+# … with 22 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Write in excel sheet to send </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>export_list <span class="ot">&lt;-</span> <span class="cf">function</span>(list_name){</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  filename <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"/Users/vinitavader/Desktop/EnglishTypeNoun-Lexical-Study/data/etic_vars_cor/"</span>,{{list_name}},<span class="st">".xlsx"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  rio<span class="sc">::</span><span class="fu">export</span>(<span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text =</span> {{list_name}})), <span class="at">check.rows =</span> <span class="cn">FALSE</span>, filename)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">export_list</span>(<span class="st">"german_cors"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="dutch" class="level3" data-number="5.0.2">
+<h3 data-number="5.0.2" class="anchored" data-anchor-id="dutch"><span class="header-section-number">5.0.2</span> Dutch</h3>
+<p><strong>Dutch self factors</strong> Malignity - Cheater, Monster, Arch-villain, False-friend Anxiety - Chicken, Scaredy-cat, Coward, Bore Extraversion - Boaster, Merrymaker, Chatterer, Chatterbox Culture - Strategist, Philosopher, Thinker, Intellectual Antagonism - Troublemaker, Nuisance, Obstructionist, Oppositionalist Perseverance - Go-getter, Worker, Workhorse Materialism - Capitalist, Leader, Authority, Boss</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dutch_self_df <span class="ot">&lt;-</span> <span class="fu">create_df</span>(<span class="st">"sc_ds"</span>, <span class="dv">7</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Dutch-partner factors</strong> Malignity - Monster, Moron, Vandal, Pain-in-the-neck Extraversion - Clown, Comedian, Merrymaker Anxiety - Scaredy-cat, Worrywart, Coward, Chicken Antagonism - Know-it-all, Oppositionalist, Obstructionist Culture - Philosopher, Poet, Intellectual, Anarchist Perseverance - Go-getter, Fighter, Worker, Workhorse Colourlessness - Stoic, Pragmatist, Chameleon, Softy</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dutch_peer_df <span class="ot">&lt;-</span> <span class="fu">create_df</span>(<span class="st">"sc_dp"</span>, <span class="dv">7</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dutch_list<span class="ot">&lt;-</span> <span class="fu">list</span>(dutch_self_df, dutch_peer_df)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>dutch_cors <span class="ot">&lt;-</span> <span class="fu">all_corr_mats</span>(dutch_list)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#sheet names</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>cand_model_names <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>, <span class="st">"fsz32ob"</span>), <span class="at">times =</span> <span class="dv">2</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>sp_string <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"_s"</span>,<span class="st">"_p"</span>), <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(dutch_cors) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(cand_model_names , sp_string)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>dutch_cors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fsr1unr_s
+# A tibble: 1 × 8
+  cand_model sc_ds1 sc_ds2 sc_ds3 sc_ds4 sc_ds5 sc_ds6  sc_ds7
+  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1 fsr1unr1    0.883  0.652  0.277 -0.414  0.756 -0.404 -0.0422
+
+$fsr5vx_s
+# A tibble: 5 × 8
+  cand_model  sc_ds1  sc_ds2  sc_ds3  sc_ds4  sc_ds5  sc_ds6  sc_ds7
+  &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 fsr5vx1     0.788   0.738   0.296  -0.245   0.705  -0.234   0.0834
+2 fsr5vx2    -0.374  -0.0428  0.254   0.718  -0.0643  0.564   0.501 
+3 fsr5vx3     0.166  -0.262  -0.0227  0.138   0.124   0.225   0.328 
+4 fsr5vx4     0.0649 -0.0524  0.0489  0.108   0.271  -0.243  -0.0919
+5 fsr5vx5     0.139  -0.0770  0.643  -0.0446  0.205   0.0778  0.175 
+
+$fsr8vx_s
+# A tibble: 8 × 8
+  cand_model    sc_ds1  sc_ds2  sc_ds3  sc_ds4  sc_ds5  sc_ds6   sc_ds7
+  &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+1 fsr8vx1     0.824     0.633   0.232  -0.345   0.687  -0.312  -0.00628
+2 fsr8vx2    -0.200    -0.0848  0.147   0.706   0.0830  0.481   0.530  
+3 fsr8vx3     0.258     0.252   0.314   0.0746  0.330   0.0423  0.260  
+4 fsr8vx4     0.0537   -0.206  -0.0652  0.137   0.0574  0.173   0.235  
+5 fsr8vx5     0.0908   -0.127  -0.0822 -0.0581  0.180  -0.351  -0.208  
+6 fsr8vx6    -0.000490 -0.0532  0.329   0.0658 -0.0131  0.151   0.136  
+7 fsr8vx7     0.00319  -0.167   0.559   0.0462  0.178   0.106   0.158  
+8 fsr8vx8    -0.190     0.285   0.0846  0.124   0.0289 -0.0866 -0.139  
+
+$fsr13ob_s
+# A tibble: 13 × 8
+   cand_model  sc_ds1  sc_ds2  sc_ds3  sc_ds4  sc_ds5  sc_ds6   sc_ds7
+   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+ 1 fsr13ob1    0.748   0.382   0.323  -0.302   0.528  -0.233   0.00948
+ 2 fsr13ob2   -0.207  -0.117   0.137   0.739  -0.0172  0.481   0.559  
+ 3 fsr13ob3   -0.131   0.0734  0.102  -0.0558 -0.119  -0.0768 -0.0798 
+ 4 fsr13ob4    0.289   0.387   0.386   0.0778  0.481   0.0240  0.279  
+ 5 fsr13ob5    0.494   0.356   0.126  -0.128   0.407   0.0281  0.214  
+ 6 fsr13ob6   -0.254  -0.190   0.281   0.297  -0.128   0.385   0.286  
+ 7 fsr13ob7    0.0972 -0.0676  0.640   0.0992  0.258   0.115   0.241  
+ 8 fsr13ob8    0.462   0.201   0.110  -0.157   0.480  -0.416  -0.0746 
+ 9 fsr13ob9   -0.375  -0.676   0.0225  0.297  -0.203   0.411   0.340  
+10 fsr13ob10  -0.427  -0.344  -0.152  -0.0234 -0.540   0.0719 -0.110  
+11 fsr13ob11  -0.346  -0.184  -0.0810  0.178  -0.190  -0.0592 -0.209  
+12 fsr13ob12   0.396   0.0437 -0.0972 -0.507   0.194  -0.324  -0.161  
+13 fsr13ob13  -0.375  -0.513  -0.300   0.121  -0.415   0.112  -0.0192 
+
+$fsz32ob_s
+# A tibble: 32 × 8
+   cand_model  sc_ds1  sc_ds2   sc_ds3   sc_ds4  sc_ds5    sc_ds6  sc_ds7
+   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+ 1 fsz32ob1    0.444   0.201   0.109   -0.0702   0.454  -0.149     0.109 
+ 2 fsz32ob2   -0.0357  0.191   0.123    0.00958  0.0360 -0.0661    0.0345
+ 3 fsz32ob3    0.0639  0.201  -0.184   -0.0245   0.147  -0.161    -0.203 
+ 4 fsz32ob4    0.0700  0.0147 -0.0847  -0.0918  -0.0695  0.103     0.127 
+ 5 fsz32ob5    0.386   0.288   0.00506 -0.377    0.291  -0.197    -0.151 
+ 6 fsz32ob6    0.273   0.265  -0.149   -0.155    0.106  -0.0590   -0.0273
+ 7 fsz32ob7    0.309   0.237   0.0938  -0.0746   0.357  -0.136    -0.0604
+ 8 fsz32ob8   -0.390  -0.336  -0.264    0.00743 -0.366  -0.000986 -0.173 
+ 9 fsz32ob9    0.116   0.618  -0.0557  -0.134    0.0101 -0.191    -0.232 
+10 fsz32ob10  -0.101  -0.196  -0.0290   0.107   -0.101   0.0283   -0.0298
+# … with 22 more rows
+
+$fsr1unr_p
+# A tibble: 1 × 8
+  cand_model sc_dp1 sc_dp2 sc_dp3 sc_dp4 sc_dp5 sc_dp6 sc_dp7
+  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 fsr1unr1    0.910 -0.140  0.486  0.449 -0.126 -0.288  0.208
+
+$fsr5vx_p
+# A tibble: 5 × 8
+  cand_model  sc_dp1 sc_dp2   sc_dp3 sc_dp4  sc_dp5 sc_dp6 sc_dp7
+  &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 fsr5vx1     0.824  -0.159  0.633   0.511   0.0140 -0.146 0.360 
+2 fsr5vx2    -0.329   0.360  0.158   0.208   0.631   0.532 0.483 
+3 fsr5vx3     0.157   0.300 -0.364   0.121   0.0768  0.293 0.0288
+4 fsr5vx4     0.150   0.277 -0.0927  0.0581  0.298  -0.166 0.0235
+5 fsr5vx5     0.0671  0.311 -0.00940 0.161  -0.118   0.107 0.124 
+
+$fsr8vx_p
+# A tibble: 8 × 8
+  cand_model  sc_dp1  sc_dp2  sc_dp3  sc_dp4   sc_dp5  sc_dp6  sc_dp7
+  &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 fsr8vx1     0.871  -0.110   0.472   0.388  -0.0290  -0.210   0.250 
+2 fsr8vx2    -0.150   0.296   0.0216  0.268   0.743    0.520   0.362 
+3 fsr8vx3     0.179  -0.131   0.300   0.450   0.00545  0.0967  0.177 
+4 fsr8vx4     0.0536  0.301  -0.261   0.0984 -0.00255  0.202   0.0803
+5 fsr8vx5     0.100   0.0530 -0.197  -0.0435  0.0936  -0.273  -0.166 
+6 fsr8vx6    -0.103   0.0612  0.0406 -0.0131  0.0335   0.141   0.171 
+7 fsr8vx7     0.0616  0.593  -0.131   0.127  -0.0138   0.128   0.0932
+8 fsr8vx8    -0.0873  0.188   0.409   0.0641  0.0814  -0.160   0.327 
+
+$fsr13ob_p
+# A tibble: 13 × 8
+   cand_model sc_dp1  sc_dp2  sc_dp3   sc_dp4   sc_dp5  sc_dp6  sc_dp7
+   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 fsr13ob1    0.651 -0.152   0.241   0.302   -0.127   -0.154   0.164 
+ 2 fsr13ob2   -0.215  0.269  -0.0421  0.276    0.667    0.470   0.310 
+ 3 fsr13ob3   -0.153 -0.332   0.162  -0.0955  -0.00314 -0.0965 -0.113 
+ 4 fsr13ob4    0.295 -0.0335  0.458   0.530    0.0615   0.0921  0.354 
+ 5 fsr13ob5    0.506 -0.0755  0.277   0.302    0.0402   0.130   0.197 
+ 6 fsr13ob6   -0.316  0.215  -0.0308 -0.00226  0.209    0.368   0.211 
+ 7 fsr13ob7    0.131  0.614  -0.0195  0.241    0.0489   0.152   0.154 
+ 8 fsr13ob8    0.508  0.0661  0.0977  0.177    0.0544  -0.302   0.0461
+ 9 fsr13ob9   -0.378  0.252  -0.638  -0.135    0.118    0.438  -0.0724
+10 fsr13ob10  -0.518 -0.0551 -0.301  -0.344   -0.332   -0.0550 -0.227 
+11 fsr13ob11  -0.347  0.149  -0.172  -0.167    0.191   -0.128  -0.0341
+12 fsr13ob12   0.345 -0.315  -0.151   0.0473  -0.419   -0.270  -0.375 
+13 fsr13ob13  -0.464 -0.0489 -0.439  -0.306   -0.0113   0.153  -0.403 
+
+$fsz32ob_p
+# A tibble: 32 × 8
+   cand_model  sc_dp1   sc_dp2    sc_dp3   sc_dp4  sc_dp5  sc_dp6   sc_dp7
+   &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+ 1 fsz32ob1    0.459  -0.0115   0.179     0.239    0.0795 -0.0256  0.0215 
+ 2 fsz32ob2   -0.0284 -0.151    0.252     0.0367   0.0631 -0.0647  0.00700
+ 3 fsz32ob3    0.135  -0.104    0.158     0.0409   0.146  -0.140   0.0433 
+ 4 fsz32ob4    0.0665 -0.122    0.000167 -0.00967 -0.178   0.113  -0.0759 
+ 5 fsz32ob5    0.465  -0.0706   0.129     0.0885  -0.241  -0.158   0.0333 
+ 6 fsz32ob6    0.223  -0.731    0.203     0.0992  -0.0445 -0.0566  0.0168 
+ 7 fsz32ob7    0.426  -0.0507   0.206     0.195    0.166  -0.0685  0.104  
+ 8 fsz32ob8   -0.345   0.00992 -0.360    -0.286    0.0172 -0.0496 -0.312  
+ 9 fsz32ob9    0.112  -0.218    0.610     0.0213  -0.0686 -0.286  -0.00730
+10 fsz32ob10  -0.120   0.0734  -0.200    -0.137    0.0485  0.0717 -0.126  
+# … with 22 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Write in excel sheet to send </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">export_list</span>(<span class="st">"dutch_cors"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="big-5" class="level3" data-number="5.0.3">
+<h3 data-number="5.0.3" class="anchored" data-anchor-id="big-5"><span class="header-section-number">5.0.3</span> Big 5</h3>
+<p><strong>Big Five factors</strong> Extraversion - Bold, Talkative, Sociable versus Bashful, Shy, Timid Agreeableness - Warm, Tolerant, Lenient versus Harsh, Stern, Cruel, Sly Conscientiousness - Organized, Logical, Firm versus Disorganized, Unsystematic, Scatterbrained Emotional Stability - Anxious, Fearful, Emotional, Jealous Intellect - Philosophical, Complex, Clever, Unconventional versus Conventional, Traditional, Unreflective</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>big5_var<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"scb5_i"</span>,<span class="st">"scb5_ii"</span>,<span class="st">"scb5_iii"</span>,<span class="st">"scb5_iv"</span>,<span class="st">"scb5_v"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>big5_df <span class="ot">&lt;-</span> <span class="fu">select_Vars2</span>(big5_var)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#cor_mat</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>big5_cors <span class="ot">&lt;-</span> <span class="fu">all_corr_mats</span>(big5_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
+Using compatibility `.name_repair`.
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sheet names</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>cand_model_names <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>, <span class="st">"fsz32ob"</span>), <span class="at">times =</span> <span class="dv">5</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>big5_string <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"_ext"</span>,<span class="st">"_agr"</span>, <span class="st">"_consc"</span>, <span class="st">"_es"</span>, <span class="st">"_intl"</span>), <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(big5_cors) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(cand_model_names , big5_string)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>big5_cors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fsr1unr_ext
+# A tibble: 1 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr1unr1   -0.0694
+
+$fsr5vx_ext
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.214 
+2 fsr5vx2    -0.0911
+3 fsr5vx3     0.210 
+4 fsr5vx4     0.0753
+5 fsr5vx5     0.601 
+
+$fsr8vx_ext
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.122 
+2 fsr8vx2    -0.0350
+3 fsr8vx3     0.0637
+4 fsr8vx4     0.0551
+5 fsr8vx5     0.103 
+6 fsr8vx6     0.232 
+7 fsr8vx7     0.590 
+8 fsr8vx8    -0.377 
+
+$fsr13ob_ext
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1    0.147 
+ 2 fsr13ob2    0.0334
+ 3 fsr13ob3    0.0309
+ 4 fsr13ob4   -0.0886
+ 5 fsr13ob5   -0.0768
+ 6 fsr13ob6    0.210 
+ 7 fsr13ob7    0.618 
+ 8 fsr13ob8    0.0255
+ 9 fsr13ob9    0.339 
+10 fsr13ob10   0.0982
+11 fsr13ob11   0.0143
+12 fsr13ob12   0.212 
+13 fsr13ob13   0.202 
+
+$fsz32ob_ext
+# A tibble: 32 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsz32ob1    0.0327 
+ 2 fsz32ob2   -0.0691 
+ 3 fsz32ob3   -0.479  
+ 4 fsz32ob4   -0.0130 
+ 5 fsz32ob5    0.00699
+ 6 fsz32ob6   -0.243  
+ 7 fsz32ob7   -0.0819 
+ 8 fsz32ob8    0.0640 
+ 9 fsz32ob9   -0.272  
+10 fsz32ob10   0.112  
+# … with 22 more rows
+
+$fsr1unr_agr
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.776
+
+$fsr5vx_agr
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.663 
+2 fsr5vx2     0.412 
+3 fsr5vx3    -0.159 
+4 fsr5vx4    -0.0440
+5 fsr5vx5    -0.155 
+
+$fsr8vx_agr
+# A tibble: 8 × 2
+  cand_model       V1
+  &lt;chr&gt;         &lt;dbl&gt;
+1 fsr8vx1    -0.657  
+2 fsr8vx2     0.201  
+3 fsr8vx3    -0.414  
+4 fsr8vx4    -0.0558 
+5 fsr8vx5    -0.133  
+6 fsr8vx6     0.0684 
+7 fsr8vx7    -0.00128
+8 fsr8vx8     0.270  
+
+$fsr13ob_agr
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1   -0.653 
+ 2 fsr13ob2    0.181 
+ 3 fsr13ob3    0.0872
+ 4 fsr13ob4   -0.382 
+ 5 fsr13ob5   -0.386 
+ 6 fsr13ob6    0.271 
+ 7 fsr13ob7   -0.0922
+ 8 fsr13ob8   -0.384 
+ 9 fsr13ob9    0.272 
+10 fsr13ob10   0.384 
+11 fsr13ob11   0.333 
+12 fsr13ob12  -0.517 
+13 fsr13ob13   0.221 
+
+$fsz32ob_agr
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1   -0.453 
+ 2 fsz32ob2    0.0120
+ 3 fsz32ob3   -0.0736
+ 4 fsz32ob4   -0.0984
+ 5 fsz32ob5   -0.249 
+ 6 fsz32ob6   -0.244 
+ 7 fsz32ob7   -0.290 
+ 8 fsz32ob8    0.372 
+ 9 fsz32ob9   -0.0400
+10 fsz32ob10   0.0689
+# … with 22 more rows
+
+$fsr1unr_consc
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.537
+
+$fsr5vx_consc
+# A tibble: 5 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr5vx1    -0.403
+2 fsr5vx2     0.337
+3 fsr5vx3     0.153
+4 fsr5vx4    -0.316
+5 fsr5vx5    -0.151
+
+$fsr8vx_consc
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.483 
+2 fsr8vx2     0.305 
+3 fsr8vx3     0.0301
+4 fsr8vx4     0.131 
+5 fsr8vx5    -0.308 
+6 fsr8vx6    -0.0412
+7 fsr8vx7    -0.113 
+8 fsr8vx8    -0.172 
+
+$fsr13ob_consc
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1   -0.327 
+ 2 fsr13ob2    0.425 
+ 3 fsr13ob3   -0.0179
+ 4 fsr13ob4   -0.129 
+ 5 fsr13ob5   -0.138 
+ 6 fsr13ob6    0.147 
+ 7 fsr13ob7   -0.109 
+ 8 fsr13ob8   -0.467 
+ 9 fsr13ob9    0.294 
+10 fsr13ob10   0.265 
+11 fsr13ob11  -0.0413
+12 fsr13ob12  -0.214 
+13 fsr13ob13   0.346 
+
+$fsz32ob_consc
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1   -0.145 
+ 2 fsz32ob2   -0.0340
+ 3 fsz32ob3   -0.104 
+ 4 fsz32ob4    0.131 
+ 5 fsz32ob5   -0.306 
+ 6 fsz32ob6   -0.0751
+ 7 fsz32ob7   -0.285 
+ 8 fsz32ob8    0.0975
+ 9 fsz32ob9   -0.112 
+10 fsz32ob10   0.0493
+# … with 22 more rows
+
+$fsr1unr_es
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.180
+
+$fsr5vx_es
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.286 
+2 fsr5vx2    -0.253 
+3 fsr5vx3     0.335 
+4 fsr5vx4     0.0483
+5 fsr5vx5    -0.275 
+
+$fsr8vx_es
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.131 
+2 fsr8vx2    -0.121 
+3 fsr8vx3    -0.376 
+4 fsr8vx4     0.275 
+5 fsr8vx5     0.0839
+6 fsr8vx6    -0.256 
+7 fsr8vx7    -0.0409
+8 fsr8vx8    -0.232 
+
+$fsr13ob_es
+# A tibble: 13 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsr13ob1   -0.194  
+ 2 fsr13ob2   -0.0162 
+ 3 fsr13ob3   -0.268  
+ 4 fsr13ob4   -0.427  
+ 5 fsr13ob5   -0.0494 
+ 6 fsr13ob6   -0.220  
+ 7 fsr13ob7   -0.130  
+ 8 fsr13ob8   -0.00946
+ 9 fsr13ob9    0.264  
+10 fsr13ob10   0.228  
+11 fsr13ob11   0.131  
+12 fsr13ob12   0.264  
+13 fsr13ob13   0.0517 
+
+$fsz32ob_es
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1   -0.122 
+ 2 fsz32ob2   -0.249 
+ 3 fsz32ob3   -0.0984
+ 4 fsz32ob4    0.0379
+ 5 fsz32ob5    0.178 
+ 6 fsz32ob6   -0.147 
+ 7 fsz32ob7   -0.133 
+ 8 fsz32ob8    0.263 
+ 9 fsz32ob9   -0.179 
+10 fsz32ob10  -0.0772
+# … with 22 more rows
+
+$fsr1unr_intl
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.163
+
+$fsr5vx_intl
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.195 
+2 fsr5vx2     0.214 
+3 fsr5vx3    -0.145 
+4 fsr5vx4     0.512 
+5 fsr5vx5    -0.0369
+
+$fsr8vx_intl
+# A tibble: 8 × 2
+  cand_model       V1
+  &lt;chr&gt;         &lt;dbl&gt;
+1 fsr8vx1    -0.184  
+2 fsr8vx2     0.379  
+3 fsr8vx3     0.00669
+4 fsr8vx4    -0.178  
+5 fsr8vx5     0.452  
+6 fsr8vx6    -0.0452 
+7 fsr8vx7     0.0444 
+8 fsr8vx8     0.0649 
+
+$fsr13ob_intl
+# A tibble: 13 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsr13ob1   -0.113  
+ 2 fsr13ob2    0.238  
+ 3 fsr13ob3    0.0805 
+ 4 fsr13ob4    0.00363
+ 5 fsr13ob5   -0.162  
+ 6 fsr13ob6    0.0502 
+ 7 fsr13ob7    0.0190 
+ 8 fsr13ob8    0.115  
+ 9 fsr13ob9    0.123  
+10 fsr13ob10  -0.250  
+11 fsr13ob11   0.537  
+12 fsr13ob12  -0.178  
+13 fsr13ob13   0.187  
+
+$fsz32ob_intl
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1    0.0345
+ 2 fsz32ob2    0.0841
+ 3 fsz32ob3    0.0922
+ 4 fsz32ob4   -0.446 
+ 5 fsz32ob5   -0.230 
+ 6 fsz32ob6   -0.0762
+ 7 fsz32ob7    0.119 
+ 8 fsz32ob8    0.0433
+ 9 fsz32ob9   -0.0605
+10 fsz32ob10   0.184 
+# … with 22 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Write in excel sheet to send </span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">export_list</span>(<span class="st">"big5_cors"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="multilanguage" class="level3" data-number="5.0.4">
+<h3 data-number="5.0.4" class="anchored" data-anchor-id="multilanguage"><span class="header-section-number">5.0.4</span> Multilanguage</h3>
+<p><strong>Multi-Language Seven factors</strong> Gregariousness - Talkative, Sociable, Comical, Expressive versus Shy, Bashful Self-Assurance - Bold, Masculine, Firm versus Fearful, Anxious, Timid Even Temper - Patient versus Irritable, Harsh, Jealous, Emotional Concern for Others - Warm, Courteous, Tolerant versus Cruel, Egotistical Conscientiousness - Organized, Stern, Thrifty versus Disorganized, Unsystematic Originality/Virtuosity - Philosophical, Clever, Complex versus Unreflective<br>
+Negative Valence - Corrupt, Evil, Good-for-nothing</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ml_var <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fu">str_subset</span>(<span class="fu">names</span>(data), <span class="at">pattern=</span><span class="st">"scml"</span>),              <span class="fu">str_subset</span>(<span class="fu">names</span>(data), <span class="at">pattern=</span><span class="st">"sc_nval"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove attraction var, it is an add on</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">str_subset</span>(<span class="at">pattern =</span> <span class="st">"scml7att"</span>, <span class="at">negate =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>ml_df <span class="ot">&lt;-</span> <span class="fu">select_Vars2</span>(ml_var)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#cor_mat</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>ml_cors <span class="ot">&lt;-</span> <span class="fu">all_corr_mats</span>(ml_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sheet names</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cand_model_names <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>, <span class="st">"fsz32ob"</span>), <span class="at">times =</span> <span class="dv">7</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>ml_string <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"_gr"</span>,<span class="st">"_sa"</span>, <span class="st">"_tmp"</span>, <span class="st">"_cfo"</span>, <span class="st">"_con"</span>, <span class="st">"_int"</span>, <span class="st">"_nval"</span>), <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ml_cors) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(cand_model_names , ml_string)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>ml_cors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fsr1unr_gr
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.150
+
+$fsr5vx_gr
+# A tibble: 5 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr5vx1    -0.247
+2 fsr5vx2     0.109
+3 fsr5vx3     0.168
+4 fsr5vx4     0.142
+5 fsr5vx5     0.609
+
+$fsr8vx_gr
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.184 
+2 fsr8vx2     0.0997
+3 fsr8vx3     0.0362
+4 fsr8vx4     0.0599
+5 fsr8vx5     0.0797
+6 fsr8vx6     0.235 
+7 fsr8vx7     0.677 
+8 fsr8vx8    -0.185 
+
+$fsr13ob_gr
+# A tibble: 13 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsr13ob1    0.0370 
+ 2 fsr13ob2    0.156  
+ 3 fsr13ob3    0.0109 
+ 4 fsr13ob4   -0.0592 
+ 5 fsr13ob5   -0.152  
+ 6 fsr13ob6    0.265  
+ 7 fsr13ob7    0.711  
+ 8 fsr13ob8    0.0140 
+ 9 fsr13ob9    0.321  
+10 fsr13ob10   0.0838 
+11 fsr13ob11   0.0806 
+12 fsr13ob12  -0.00690
+13 fsr13ob13   0.146  
+
+$fsz32ob_gr
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1    0.0134
+ 2 fsz32ob2   -0.0464
+ 3 fsz32ob3   -0.412 
+ 4 fsz32ob4   -0.0795
+ 5 fsz32ob5   -0.0522
+ 6 fsz32ob6   -0.406 
+ 7 fsz32ob7   -0.0853
+ 8 fsz32ob8    0.0911
+ 9 fsz32ob9   -0.232 
+10 fsz32ob10   0.116 
+# … with 22 more rows
+
+$fsr1unr_sa
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.139
+
+$fsr5vx_sa
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.283 
+2 fsr5vx2    -0.145 
+3 fsr5vx3     0.606 
+4 fsr5vx4     0.0589
+5 fsr5vx5     0.116 
+
+$fsr8vx_sa
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.161 
+2 fsr8vx2     0.0194
+3 fsr8vx3    -0.0747
+4 fsr8vx4     0.490 
+5 fsr8vx5     0.123 
+6 fsr8vx6    -0.0553
+7 fsr8vx7     0.224 
+8 fsr8vx8    -0.423 
+
+$fsr13ob_sa
+# A tibble: 13 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsr13ob1    0.00513
+ 2 fsr13ob2    0.137  
+ 3 fsr13ob3   -0.425  
+ 4 fsr13ob4   -0.219  
+ 5 fsr13ob5    0.0268 
+ 6 fsr13ob6    0.0145 
+ 7 fsr13ob7    0.227  
+ 8 fsr13ob8    0.0215 
+ 9 fsr13ob9    0.455  
+10 fsr13ob10   0.149  
+11 fsr13ob11   0.00616
+12 fsr13ob12   0.269  
+13 fsr13ob13   0.286  
+
+$fsz32ob_sa
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1    0.0162
+ 2 fsz32ob2   -0.420 
+ 3 fsz32ob3   -0.283 
+ 4 fsz32ob4    0.0855
+ 5 fsz32ob5    0.0369
+ 6 fsz32ob6   -0.219 
+ 7 fsz32ob7   -0.166 
+ 8 fsz32ob8    0.110 
+ 9 fsz32ob9   -0.441 
+10 fsz32ob10   0.119 
+# … with 22 more rows
+
+$fsr1unr_tmp
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.616
+
+$fsr5vx_tmp
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.613 
+2 fsr5vx2     0.109 
+3 fsr5vx3     0.179 
+4 fsr5vx4    -0.0219
+5 fsr5vx5    -0.264 
+
+$fsr8vx_tmp
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.500 
+2 fsr8vx2     0.0684
+3 fsr8vx3    -0.513 
+4 fsr8vx4     0.188 
+5 fsr8vx5    -0.0490
+6 fsr8vx6    -0.0946
+7 fsr8vx7    -0.0315
+8 fsr8vx8    -0.0304
+
+$fsr13ob_tmp
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1   -0.513 
+ 2 fsr13ob2    0.159 
+ 3 fsr13ob3   -0.142 
+ 4 fsr13ob4   -0.553 
+ 5 fsr13ob5   -0.295 
+ 6 fsr13ob6    0.0482
+ 7 fsr13ob7   -0.134 
+ 8 fsr13ob8   -0.243 
+ 9 fsr13ob9    0.367 
+10 fsr13ob10   0.404 
+11 fsr13ob11   0.240 
+12 fsr13ob12  -0.156 
+13 fsr13ob13   0.188 
+
+$fsz32ob_tmp
+# A tibble: 32 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsz32ob1   -0.332  
+ 2 fsz32ob2   -0.180  
+ 3 fsz32ob3   -0.114  
+ 4 fsz32ob4    0.00474
+ 5 fsz32ob5   -0.0834 
+ 6 fsz32ob6   -0.272  
+ 7 fsz32ob7   -0.281  
+ 8 fsz32ob8    0.392  
+ 9 fsz32ob9   -0.123  
+10 fsz32ob10  -0.00410
+# … with 22 more rows
+
+$fsr1unr_cfo
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.800
+
+$fsr5vx_cfo
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.646 
+2 fsr5vx2     0.562 
+3 fsr5vx3    -0.122 
+4 fsr5vx4    -0.0281
+5 fsr5vx5    -0.160 
+
+$fsr8vx_cfo
+# A tibble: 8 × 2
+  cand_model       V1
+  &lt;chr&gt;         &lt;dbl&gt;
+1 fsr8vx1    -0.671  
+2 fsr8vx2     0.365  
+3 fsr8vx3    -0.353  
+4 fsr8vx4    -0.0297 
+5 fsr8vx5    -0.157  
+6 fsr8vx6     0.0715 
+7 fsr8vx7     0.00727
+8 fsr8vx8     0.280  
+
+$fsr13ob_cfo
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1   -0.687 
+ 2 fsr13ob2    0.300 
+ 3 fsr13ob3    0.0847
+ 4 fsr13ob4   -0.289 
+ 5 fsr13ob5   -0.313 
+ 6 fsr13ob6    0.329 
+ 7 fsr13ob7   -0.0762
+ 8 fsr13ob8   -0.400 
+ 9 fsr13ob9    0.356 
+10 fsr13ob10   0.317 
+11 fsr13ob11   0.316 
+12 fsr13ob12  -0.611 
+13 fsr13ob13   0.246 
+
+$fsz32ob_cfo
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1   -0.421 
+ 2 fsz32ob2    0.0347
+ 3 fsz32ob3   -0.0688
+ 4 fsz32ob4   -0.0933
+ 5 fsz32ob5   -0.314 
+ 6 fsz32ob6   -0.266 
+ 7 fsz32ob7   -0.269 
+ 8 fsz32ob8    0.266 
+ 9 fsz32ob9   -0.124 
+10 fsz32ob10   0.0807
+# … with 22 more rows
+
+$fsr1unr_con
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.317
+
+$fsr5vx_con
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.147 
+2 fsr5vx2     0.415 
+3 fsr5vx3     0.0762
+4 fsr5vx4    -0.284 
+5 fsr5vx5    -0.0751
+
+$fsr8vx_con
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.262 
+2 fsr8vx2     0.381 
+3 fsr8vx3     0.137 
+4 fsr8vx4     0.0368
+5 fsr8vx5    -0.345 
+6 fsr8vx6    -0.0167
+7 fsr8vx7    -0.0419
+8 fsr8vx8    -0.0974
+
+$fsr13ob_con
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1   -0.191 
+ 2 fsr13ob2    0.430 
+ 3 fsr13ob3    0.0574
+ 4 fsr13ob4    0.0665
+ 5 fsr13ob5    0.0198
+ 6 fsr13ob6    0.148 
+ 7 fsr13ob7   -0.0271
+ 8 fsr13ob8   -0.390 
+ 9 fsr13ob9    0.213 
+10 fsr13ob10   0.0831
+11 fsr13ob11  -0.102 
+12 fsr13ob12  -0.244 
+13 fsr13ob13   0.143 
+
+$fsz32ob_con
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1   -0.0891
+ 2 fsz32ob2    0.0703
+ 3 fsz32ob3   -0.0410
+ 4 fsz32ob4    0.119 
+ 5 fsz32ob5   -0.250 
+ 6 fsz32ob6   -0.0118
+ 7 fsz32ob7   -0.147 
+ 8 fsz32ob8   -0.0716
+ 9 fsz32ob9   -0.0769
+10 fsz32ob10   0.0146
+# … with 22 more rows
+
+$fsr1unr_int
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.458
+
+$fsr5vx_int
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.350 
+2 fsr5vx2     0.593 
+3 fsr5vx3     0.0150
+4 fsr5vx4     0.255 
+5 fsr5vx5    -0.0615
+
+$fsr8vx_int
+# A tibble: 8 × 2
+  cand_model       V1
+  &lt;chr&gt;         &lt;dbl&gt;
+1 fsr8vx1    -0.405  
+2 fsr8vx2     0.639  
+3 fsr8vx3    -0.00504
+4 fsr8vx4    -0.00282
+5 fsr8vx5     0.119  
+6 fsr8vx6     0.0237 
+7 fsr8vx7     0.0567 
+8 fsr8vx8     0.0937 
+
+$fsr13ob_int
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1   -0.349 
+ 2 fsr13ob2    0.578 
+ 3 fsr13ob3    0.0251
+ 4 fsr13ob4   -0.0166
+ 5 fsr13ob5   -0.201 
+ 6 fsr13ob6    0.255 
+ 7 fsr13ob7    0.0696
+ 8 fsr13ob8   -0.129 
+ 9 fsr13ob9    0.292 
+10 fsr13ob10  -0.0929
+11 fsr13ob11   0.326 
+12 fsr13ob12  -0.461 
+13 fsr13ob13   0.260 
+
+$fsz32ob_int
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1   -0.0642
+ 2 fsz32ob2    0.0531
+ 3 fsz32ob3   -0.0180
+ 4 fsz32ob4   -0.187 
+ 5 fsz32ob5   -0.375 
+ 6 fsz32ob6   -0.185 
+ 7 fsz32ob7   -0.0180
+ 8 fsz32ob8    0.0985
+ 9 fsz32ob9   -0.134 
+10 fsz32ob10   0.209 
+# … with 22 more rows
+
+$fsr1unr_nval
+# A tibble: 1 × 2
+  cand_model    V1
+  &lt;chr&gt;      &lt;dbl&gt;
+1 fsr1unr1   0.862
+
+$fsr5vx_nval
+# A tibble: 5 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr5vx1     0.768
+2 fsr5vx2    -0.317
+3 fsr5vx3     0.120
+4 fsr5vx4     0.171
+5 fsr5vx5     0.129
+
+$fsr8vx_nval
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1     0.826 
+2 fsr8vx2    -0.151 
+3 fsr8vx3     0.167 
+4 fsr8vx4     0.0147
+5 fsr8vx5     0.162 
+6 fsr8vx6     0.0333
+7 fsr8vx7     0.0136
+8 fsr8vx8    -0.111 
+
+$fsr13ob_nval
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1    0.697 
+ 2 fsr13ob2   -0.186 
+ 3 fsr13ob3   -0.0969
+ 4 fsr13ob4    0.245 
+ 5 fsr13ob5    0.431 
+ 6 fsr13ob6   -0.218 
+ 7 fsr13ob7    0.0973
+ 8 fsr13ob8    0.536 
+ 9 fsr13ob9   -0.367 
+10 fsr13ob10  -0.466 
+11 fsr13ob11  -0.286 
+12 fsr13ob12   0.329 
+13 fsr13ob13  -0.434 
+
+$fsz32ob_nval
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1    0.421 
+ 2 fsz32ob2    0.0214
+ 3 fsz32ob3    0.121 
+ 4 fsz32ob4    0.0472
+ 5 fsz32ob5    0.381 
+ 6 fsz32ob6    0.248 
+ 7 fsz32ob7    0.377 
+ 8 fsz32ob8   -0.338 
+ 9 fsz32ob9    0.131 
+10 fsz32ob10  -0.112 
+# … with 22 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Write in excel sheet to send </span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">export_list</span>(<span class="st">"ml_cors"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="big-1" class="level3" data-number="5.0.5">
+<h3 data-number="5.0.5" class="anchored" data-anchor-id="big-1"><span class="header-section-number">5.0.5</span> Big 1</h3>
+<p><strong>Big One factors</strong> Responsible, Patient, Warm, Clever, Sociable versus Cruel, Irritable, Disorganized, Corrupt, Dishonest</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>big1_var <span class="ot">&lt;-</span><span class="fu">str_subset</span>(<span class="fu">names</span>(data), <span class="at">pattern=</span><span class="st">"scb1"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>big1_df <span class="ot">&lt;-</span> <span class="fu">select_Vars2</span>(big1_var)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">#cor_mat</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>big1_cors <span class="ot">&lt;-</span> <span class="fu">all_corr_mats</span>(big1_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sheet names</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cand_model_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>, <span class="st">"fsz32ob"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>big1_string <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"_scb1.sd"</span>), <span class="at">times =</span><span class="dv">5</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(big1_cors) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(cand_model_names , big1_string)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>big1_cors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fsr1unr_scb1.sd
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.861
+
+$fsr5vx_scb1.sd
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.722 
+2 fsr5vx2     0.519 
+3 fsr5vx3     0.0205
+4 fsr5vx4    -0.151 
+5 fsr5vx5    -0.0981
+
+$fsr8vx_scb1.sd
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.740 
+2 fsr8vx2     0.347 
+3 fsr8vx3    -0.309 
+4 fsr8vx4     0.0669
+5 fsr8vx5    -0.232 
+6 fsr8vx6     0.0911
+7 fsr8vx7     0.0399
+8 fsr8vx8     0.0909
+
+$fsr13ob_scb1.sd
+# A tibble: 13 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsr13ob1   -0.665  
+ 2 fsr13ob2    0.406  
+ 3 fsr13ob3    0.0421 
+ 4 fsr13ob4   -0.359  
+ 5 fsr13ob5   -0.359  
+ 6 fsr13ob6    0.352  
+ 7 fsr13ob7   -0.00853
+ 8 fsr13ob8   -0.478  
+ 9 fsr13ob9    0.415  
+10 fsr13ob10   0.428  
+11 fsr13ob11   0.226  
+12 fsr13ob12  -0.478  
+13 fsr13ob13   0.327  
+
+$fsz32ob_scb1.sd
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1   -0.390 
+ 2 fsz32ob2   -0.0479
+ 3 fsz32ob3   -0.163 
+ 4 fsz32ob4   -0.0107
+ 5 fsz32ob5   -0.336 
+ 6 fsz32ob6   -0.282 
+ 7 fsz32ob7   -0.345 
+ 8 fsz32ob8    0.323 
+ 9 fsz32ob9   -0.166 
+10 fsz32ob10   0.0679
+# … with 22 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Write in excel sheet to send </span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">export_list</span>(<span class="st">"big1_cors"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="big-2" class="level3" data-number="5.0.6">
+<h3 data-number="5.0.6" class="anchored" data-anchor-id="big-2"><span class="header-section-number">5.0.6</span> Big 2</h3>
+<p><strong>Big Two factors</strong> Morality and Social Propriety - Courteous, Patient, Tolerant, Responsible versus Cruel, Harsh, Irritable, Reckless, Corrupt, Egotistical Dynamism/Dominance/Deference - Expressive, Talkative, Bold, Clever, Sociable, Humorous, Good-looking versus Timid, Dull, Bashful</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>big2_var <span class="ot">&lt;-</span><span class="fu">str_subset</span>(<span class="fu">names</span>(data), <span class="at">pattern=</span><span class="st">"scb2"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">str_subset</span>(<span class="at">pattern=</span><span class="st">"10"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>big2_df <span class="ot">&lt;-</span> <span class="fu">select_Vars2</span>(big2_var)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">#cor_mat</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>big2_cors <span class="ot">&lt;-</span> <span class="fu">all_corr_mats</span>(big2_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sheet names</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>cand_model_names <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"fsr1unr"</span>, <span class="st">"fsr5vx"</span>, <span class="st">"fsr8vx"</span>, <span class="st">"fsr13ob"</span>, <span class="st">"fsz32ob"</span>), <span class="at">times =</span> <span class="dv">2</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>big2_string <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"_scb2.s10"</span>,<span class="st">"_scb2.d10"</span>), <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(big2_cors) <span class="ot">&lt;-</span> <span class="fu">str_c</span>(cand_model_names , big2_string)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>big2_cors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fsr1unr_scb2.s10
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.859
+
+$fsr5vx_scb2.s10
+# A tibble: 5 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr5vx1    -0.709 
+2 fsr5vx2     0.464 
+3 fsr5vx3    -0.0929
+4 fsr5vx4    -0.164 
+5 fsr5vx5    -0.228 
+
+$fsr8vx_scb2.s10
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.729 
+2 fsr8vx2     0.276 
+3 fsr8vx3    -0.369 
+4 fsr8vx4    -0.0152
+5 fsr8vx5    -0.239 
+6 fsr8vx6     0.0205
+7 fsr8vx7    -0.0700
+8 fsr8vx8     0.166 
+
+$fsr13ob_scb2.s10
+# A tibble: 13 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsr13ob1   -0.694 
+ 2 fsr13ob2    0.295 
+ 3 fsr13ob3    0.0850
+ 4 fsr13ob4   -0.388 
+ 5 fsr13ob5   -0.349 
+ 6 fsr13ob6    0.261 
+ 7 fsr13ob7   -0.158 
+ 8 fsr13ob8   -0.505 
+ 9 fsr13ob9    0.343 
+10 fsr13ob10   0.439 
+11 fsr13ob11   0.278 
+12 fsr13ob12  -0.510 
+13 fsr13ob13   0.298 
+
+$fsz32ob_scb2.s10
+# A tibble: 32 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsz32ob1   -0.450  
+ 2 fsz32ob2   -0.00311
+ 3 fsz32ob3   -0.0957 
+ 4 fsz32ob4   -0.0290 
+ 5 fsz32ob5   -0.304  
+ 6 fsz32ob6   -0.217  
+ 7 fsz32ob7   -0.358  
+ 8 fsz32ob8    0.340  
+ 9 fsz32ob9   -0.0814 
+10 fsz32ob10   0.0615 
+# … with 22 more rows
+
+$fsr1unr_scb2.d10
+# A tibble: 1 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr1unr1   -0.449
+
+$fsr5vx_scb2.d10
+# A tibble: 5 × 2
+  cand_model     V1
+  &lt;chr&gt;       &lt;dbl&gt;
+1 fsr5vx1    -0.486
+2 fsr5vx2     0.330
+3 fsr5vx3     0.217
+4 fsr5vx4     0.103
+5 fsr5vx5     0.528
+
+$fsr8vx_scb2.d10
+# A tibble: 8 × 2
+  cand_model      V1
+  &lt;chr&gt;        &lt;dbl&gt;
+1 fsr8vx1    -0.435 
+2 fsr8vx2     0.282 
+3 fsr8vx3    -0.0411
+4 fsr8vx4     0.129 
+5 fsr8vx5     0.0571
+6 fsr8vx6     0.357 
+7 fsr8vx7     0.522 
+8 fsr8vx8    -0.181 
+
+$fsr13ob_scb2.d10
+# A tibble: 13 × 2
+   cand_model       V1
+   &lt;chr&gt;         &lt;dbl&gt;
+ 1 fsr13ob1   -0.177  
+ 2 fsr13ob2    0.345  
+ 3 fsr13ob3   -0.00396
+ 4 fsr13ob4   -0.156  
+ 5 fsr13ob5   -0.239  
+ 6 fsr13ob6    0.490  
+ 7 fsr13ob7    0.569  
+ 8 fsr13ob8   -0.110  
+ 9 fsr13ob9    0.480  
+10 fsr13ob10   0.194  
+11 fsr13ob11   0.158  
+12 fsr13ob12  -0.160  
+13 fsr13ob13   0.308  
+
+$fsz32ob_scb2.d10
+# A tibble: 32 × 2
+   cand_model      V1
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 fsz32ob1   -0.114 
+ 2 fsz32ob2   -0.101 
+ 3 fsz32ob3   -0.430 
+ 4 fsz32ob4   -0.0752
+ 5 fsz32ob5   -0.256 
+ 6 fsz32ob6   -0.391 
+ 7 fsz32ob7   -0.169 
+ 8 fsz32ob8    0.163 
+ 9 fsz32ob9   -0.320 
+10 fsz32ob10   0.175 
+# … with 22 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Write in excel sheet to send </span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">export_list</span>(<span class="st">"big2_cors"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
