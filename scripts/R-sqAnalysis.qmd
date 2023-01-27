@@ -70,9 +70,9 @@ big5_dimension = fsr1unr1 big5_dimension = fsr1unr1 + fsr5vx big5_dimension = fs
 ### Step1:Create IVs and DVs
 
 ```{r}
-
 #create a vectors for names of independent and dependent variables 
 var_names_string <- function(actual_string){
+  #actual_string = "fsr5vx"
    extract_no <- str_extract_all({{actual_string}},"\\(?[0-9,.]+\\)?") %>% 
     unlist() %>% 
     as.numeric()
@@ -82,19 +82,20 @@ var_names_string <- function(actual_string){
 }
 
 step_list <- list(
-  step1 <- c("fsr1unr"),
+  step1 <- list("fsr1unr"),
   
-  step2 <-c("fsr1unr", "fsr5vx"), 
+  step2 <-list("fsr1unr", "fsr5vx"), 
   
-  step3 <-c("fsr1unr", "fsr5vx", "fsr8vx"),
+  step3 <-list("fsr1unr", "fsr5vx", "fsr8vx"),
   
-  step4 <- c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob"),
+  step4 <- list("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob"),
              
-  step5 <- c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob")
+  step5 <- list("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob")
     
   )
 
-indep <- map_depth(step_list, 2, var_names_string) %>% map(., unlist) 
+
+indep <- step_list %>% map_depth(2, var_names_string) %>% map(., unlist) 
 
 dep <- c("scb5_i ~", "scb5_ii ~", "scb5_iii ~", "scb5_iv ~", "scb5_v ~")
 
@@ -107,12 +108,13 @@ dep <- c("scb5_i ~", "scb5_ii ~", "scb5_iii ~", "scb5_iv ~", "scb5_v ~")
 run_model<- function(x, y){
 
   formula <- as.formula(paste(y,paste0(x %>% unlist, collapse="+")))
+  model <- lm(formula, data = all_data)
  r_squared <-  lm(formula, data = all_data) %>% 
     summary() %>% 
    broom::glance() %>% 
   dplyr::select(r.squared)
  
- output <- list(formula,r_squared)
+ output <- list(formula,r_squared,model)
  #names(output) <- c("formula", "value")
  output
 }
@@ -132,6 +134,9 @@ list_names <- str_c(big5_vars , no_string)
 names(model_list) <- list_names
 
 model_list
+
+
+
 ```
 
 ### Setp3: Table
@@ -260,7 +265,7 @@ tbl
 
 ```
 
-### Setp4: Plot - table
+#### Plot1: facet_wrap
 
 ```{r}
 
@@ -295,6 +300,54 @@ p
 
 ```
 
+#### Plot2: coord_flip
+
+```{r eval=FALSE, include=FALSE}
+labels <- c("1" = "1 = 1-factor-unrotated", 
+            "1+5" = "1+5 = 1-factor-unrotated + 5-factor-varimax",
+            "1+5+8" = "1+5+8 = 1-factor-unrotated + 5-factor-varimax + \n 8-factor-varimax",
+            "1+5+8+13" = "1+5+8+13 = 1-factor-unrotated + 5-factor-varimax + \n 8-factor-varimax + 13-factor-oblimin",
+           "1+5+8+13+32" = "1+5+8+13+32 = 1-factor-unrotated + 5-factor-varimax +\n 8-factor-varimax + 13-factor-oblimin \n +32-factor-oblimin")
+
+dims_labels <- data.frame(
+  dims <- unique(r.sq_table$b5_dim),
+  x_cord <- c(5, 10, 15, 20, 25),
+  y_cord <- rep(-.2, times = 5)
+)
+
+r.sq_table$all_mods
+p <- r.sq_table %>% 
+  mutate(dim_short = paste0(str_sub(string = b5_dim, start = 1, end = 2), "_"),
+         lbl_dim = str_c(dim_short,all_mods)) %>% 
+  ggplot(aes(x = fct_inorder(lbl_dim) , y = r_sq)) +
+  geom_col(position = "dodge", alpha = .8, width = .6) + 
+ # scale_x_discrete(breaks = unique(r.sq_table$all_mods))
+  #position_dodge(preserve = "single"
+  scale_x_discrete(labels=rep(c("1", "1+5", "1+5+8", "1+5+8+13", "1+5+8+13+32"), times = 5))+
+  coord_flip()+
+    geom_text(data = dims_labels, aes(x = x_cord, y = y_cord, label = text))
+  #annotate(geom = 'text', label = dims_labels , x = 5, y = -.2, hjust = 0, vjust = 1)
+
+  
+  labs(x = "Models",
+       y = "R-squared values", 
+       fill = "X-axis labels")+
+  scale_fill_manual(values = rep("#8d9096", length(labels)), labels = labels)+
+
+ jtools::theme_apa(
+ remove.y.gridlines = FALSE,
+ remove.x.gridlines = FALSE)+
+   theme(text=element_text(family="Helvetica"),
+        axis.text.x=element_text(size = 4.5), 
+        legend.key = element_rect(fill = NA, color = NA),
+        legend.key.width = unit(.5, "cm"),
+        legend.spacing.y = unit(1, "cm"),
+        legend.key.height= unit(.6, "cm"),
+        legend.position = c(.84, .28),
+        legend.text=element_text(size=5))
+p
+```
+
 ```{r eval=FALSE, include=FALSE}
 # Found a better way of creating this list with map_depth
 indep <- list(
@@ -318,4 +371,199 @@ models <- lapply(dep, function(x, y)
 models <- lapply(dep, function(x, y)
     step(lm(as.formula(paste(x, paste(y, collapse="+"))), data=mtcars), 
          direction="backward"), y = indep)
+```
+
+#### Plot3: geom_line
+
+-   This is the final one for the paper
+
+```{r}
+r.sq_table %>% 
+  dplyr::select(b5_dim, all_mods, r_sq) %>% 
+ggplot(aes(x = factor(all_mods), 
+           y = r_sq, 
+           group = fct_inorder(b5_dim)))+ 
+           #linetype = fct_inorder(b5_dim))) +
+  geom_line(linetype = "dotted")+ 
+  geom_point(aes(shape = fct_inorder(b5_dim)),size = 2)+
+  scale_shape_manual(values = c(0, 4, 2, 1,8))+
+    #scale_size_manual(values = c(.5, .5, .5, .5,.5)) +
+   # scale_linetype_manual( values = c("solid", "dotdash", "dashed", "twodash", "dotted")) +
+    scale_color_manual(values=c("black", "black", "black", "black", "black"))+
+  ylim(0, 1)+
+  labs(x = "Candidate models as predictors",
+       y = "R-squared values")+
+   jtools::theme_apa(legend.pos = "bottomright", 
+                    remove.y.gridlines = FALSE, 
+                    remove.x.gridlines = FALSE, 
+                    legend.font.size = 9) +
+  theme(legend.key.width = unit(1,"cm"),
+        legend.key.height=unit(0.4,"cm"),
+        legend.position = c(0.90, 0.08), 
+        title = element_blank(),
+        text=element_text(family="Helvetica"), 
+        legend.background = element_rect(fill = "grey94"))
+```
+
+# Heirarchical Regression
+
+```{r}
+#colname1 - R-squared Change
+r_sq_change <- r.sq_table %>%
+  group_by(b5_dim) %>% 
+  mutate(Rsq_change = abs(r_sq - lag(r_sq)))
+
+r_sq_change %>% print(n=nrow(.))
+
+#colname2 - F Change
+options(scipen = 999, digits = 4)
+
+#Pull all the models out of the larger list
+pull_third_idx <- function(model_name){
+  
+  model <- eval(parse(text = (paste0("(model_list$",{{model_name}},")[[3]]"))))
+ model
+}
+
+list_models <- map(list_names, pull_third_idx) %>% 
+  set_names(list_names)
+
+
+df_vars <- tibble(
+  big5_vars = rep(c("b5_i", "b5_ii", "b5_iii", "b5_iv", "b5_v"), each= 4),
+  no1 = rep(1:4, times = 5),
+  no2 = rep(2:5, times = 5),
+  no1_var = paste0(big5_vars, "_", no1),
+  no2_var = paste0(big5_vars, "_", no2),
+  combine = str_c(no1_var, no2_var, sep = "&")
+  
+)
+
+f_test <- function(no1_var,no2_var){
+   m1 = eval(parse(text = paste0("list_models$",{{no1_var}},"")))
+   m2 = eval(parse(text = paste0("list_models$",{{no2_var}},"")))
+   
+   model = anova(m1, m2, test="F")
+   
+   output = tibble(
+     f_value = model$F[2],    
+     p_value = round(model$`Pr(>F)`[2],5),
+     df_1   = model$Df[2],
+     df_2   = model$Res.Df[2])
+   output
+}
+
+f_stats <- map2_df(df_vars$no1_var,df_vars$no2_var, f_test) %>% 
+  mutate(models = df_vars$combine)
+
+f_stats 
+```
+
+```{r}
+#for models1 for each dimension
+
+b5_vars = c("scb5_i", "scb5_ii", "scb5_iii", "scb5_iv", "scb5_v")
+
+
+m1_summary <- function(b5dim){
+ 
+  formula <-  as.formula(paste0({{b5dim}}, "~fsr1unr1"))
+ mod_sum <- lm(formula, data = all_data) %>% 
+    summary() %>% 
+   broom::glance() %>% 
+   dplyr::select(r.squared, statistic, p.value, df, df.residual) %>% 
+   mutate(p.value = round(p.value, 5)) %>% 
+   rename("r_sq" = r.squared,
+          "p_val" = p.value,
+          "df_1" = df,
+          "df_2" = df.residual,
+          "F" = statistic)
+  mod_sum
+}
+
+dim1_stats <- map_df(b5_vars, m1_summary) %>% 
+  tibble(b5_vars)
+
+dim1_stats 
+```
+
+```{r eval=FALSE, include=FALSE}
+
+#Write in excel sheet to send 
+filename <- "/Users/vinitavader/Desktop/EnglishTypenoun-Lexical-Study/data/rSqChange_table.xlsx"
+
+rio::export(list(r_sq_change, f_stats, dim1_stats ), check.rows = FALSE, filename)
+```
+
+```{r eval=FALSE, include=FALSE}
+#Extra stuff
+
+#colname3 - ß values
+QuantPsyc::lm.beta(model)
+
+#mod_name = b5_i_5
+formula_pull <- function(mod_name){
+  formula = eval(parse(text = paste0("model_list$",{{mod_name}},"[[1]]")))
+  formula
+}
+
+map(b5_vars, funks )
+
+list_models$b5_i_5
+```
+
+# Multiple Regression
+
+```{r}
+ob32mod_names <- paste0("fsz32ob", 1:32)
+
+b5_vars <- c("scb5_i", "scb5_ii", "scb5_iii", "scb5_iv", "scb5_v")
+
+r_sq_32ob <- function(ob32dim){
+ 
+  formula <-  as.formula(paste0({{ob32dim}}, "~", paste0(b5_vars %>% unlist, collapse="+")))
+
+ r_sq_value <- lm(formula, data = all_data) %>% 
+    summary() %>% 
+   broom::glance() %>% 
+   dplyr::select(r.squared) %>% 
+   rename("r_sq" = r.squared)
+  r_sq_value
+}
+
+ob32_rsq <- map_df(ob32mod_names,r_sq_32ob) %>% 
+  mutate(factor = ob32mod_names) %>% 
+  dplyr::select(factor, r_sq)
+```
+
+```{r}
+ob32mod_names <- paste0("fsz32ob", 1:32)
+
+b5_vars <- c("scb5_i", "scb5_ii", "scb5_iii", "scb5_iv", "scb5_v")
+
+r_sq_b5 <- function(b5dim){
+ 
+  formula <-  as.formula(paste0({{b5dim}}, "~", paste0(ob32mod_names %>% unlist, collapse="+")))
+
+ r_sq_value <- lm(formula, data = all_data) %>% 
+    summary() %>% 
+   broom::glance() %>% 
+   dplyr::select(r.squared) %>% 
+   rename("r_sq" = r.squared)
+  r_sq_value
+}
+
+b5_rsq <- map_df(b5_vars ,r_sq_b5) %>% 
+  mutate(factor = b5_vars) %>% 
+  pivot_wider(names_from = factor, values_from = r_sq)
+
+
+```
+
+```{r eval=FALSE, include=FALSE}
+
+#Write in excel sheet to send 
+filename <- "/Users/vinitavader/Desktop/EnglishTypenoun-Lexical-Study/data/tables/rSq32b5_table.xlsx"
+
+rio::export(list(ob32_rsq, b5_rsq), check.rows = FALSE, filename)
 ```

@@ -80,6 +80,7 @@ congrunce_mat_unnamed <- function(dataType){
 
   #get the list of sheets - appropriate var names
   ips.raw_data <- final_data({{dataType}})
+  #ips.raw_data <- final_data("Ipsatized")
   
   #split the lists into females and males dfs
   list_all <- map(ips.raw_data, split_list)
@@ -129,7 +130,7 @@ retain_rows <- mat_long %>%
 retain_rows
  }
  
-#Fucntion to compute congruence coefficients
+#Function to compute congruence coefficients
  compute_avg.cc <- function(model){
   avg_cc <- model %>% 
       summarise(avg_cc = mean(abs(cc)))

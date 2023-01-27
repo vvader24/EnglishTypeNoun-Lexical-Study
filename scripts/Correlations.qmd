@@ -4,16 +4,24 @@ author: "Vinita Vader"
 format:
   html:
     toc: true
+    toc-location: left
+    tbl-colwidths: [40, 30, 30]
     number-sections: true
     css: styles.css
 editor: visual
 ---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
 
 # Addendum 1
 
 We will generate correlations matrices showing the relation to the 1, 5, 8, and 13-factor models' variables to the following 'external/etic variables': the Dutch and the German type-noun factors, the Big Five, Big Three, Big Two, and Big One structures as well the Multi-Language Seven set.
 
 # Import data
+
 ```{r message=FALSE,warning=FALSE}
 library(tidyverse)
 #data with all fs and type-nouns 
@@ -24,21 +32,29 @@ data <- rio::import(here::here("data", "typenoun.sav"), setclass = "tbl_df") %>%
 #data.frame(names(data)) %>% View
 
 #data for the factor scores of 1,5,8,13 and 32 factor candidate models 
-fs_candModels <- rio::import(here::here("data", "typenoun_FSonly1_5_8_13_32.xlsx"), setclass = "tbl_df") %>% 
-  rio::characterize() %>% 
+fs_candModels <- rio::import(here::here("data", "typenoun_FSonly1_5_8_13_32.xlsx"), setclass = "tbl_df") %>%   
+  rio::characterize() %>%   
   janitor::clean_names()
 
+#names(fs_candModels)
+
+factor_labels_RAWtable <- rio::import(here::here("data","correct_order_factors.xlsx"), setclass = "tbl_df")%>%   
+  rio::characterize() %>%   
+  janitor::clean_names()
+
+options(dplyr.print_max = 1e9)
 ```
 
 # Functions
+
 ```{r}
-#function for fs_candModels data
+#function for selecting variables for fs_candModels data
 select_Vars <- function(varNames){
   fs_candModels %>% 
     dplyr::select_at(vars(all_of((varNames))))
 }
 
-#function for calling data for etic vars
+#function for electing variables for etic models
 select_Vars2 <- function(varNames){
   data %>% 
     dplyr::select_at(vars(all_of((varNames))))
@@ -51,16 +67,59 @@ create_df <- function(string, no_vars){
   df
 }
 
+#convert cors -> 2 decimal places; used as a function for the funk below
+round_df <- function(cor_df){
+  cor_df %>% 
+    as.data.frame() %>% 
+   as_tibble() %>% 
+ mutate_if(., is.numeric, round ,2)
+}
+
 #correlation across lists 
 all_corr_mats <- function(etic_list){
-  cross2(list_fs, etic_list) %>% 
-   invoke_map(cor, .) %>% 
-   map(., as_tibble, rownames = "cand_model") 
+  cross2(list_fs, etic_list) %>%   
+   invoke_map(cor, .) %>%  
+   map(., as_tibble, rownames = "cand_model") %>% 
+   map(., round_df) #cors -> 2 decimal places
   
+}
+
+#a neat correlation table with a diagonal
+neatCortab <- function(corMat){
+
+  #corMat here is a tibble with one col as the candidate models
+  data = corMat %>% 
+     mutate_if(is.numeric, round, 3)
+ 
+  #get the col names
+  var_names <- data %>% 
+      select_if(is.numeric) %>% 
+      names()
+ 
+ #function to rearrange the correlation matrices  
+abv.4_allCols <-  function(var){
+    var <- sym(var) #allows a string (e.g., "col1" to be evaluated as the a variable name)
+    data %>% 
+      #arrange the df acc to the specified col in desc order
+     arrange(desc(abs(!!{{var}}))) %>% 
+     filter(abs(!!{{var}}) >= .4)
+  }
+  
+  #get list of all the  ≥.4 values for every col
+all_.4 <- map(var_names, abv.4_allCols)
+  
+  #merge all the lists and retain only distinct rows
+partDF_.4 <- all_.4 %>%  map_df(bind_rows) %>% distinct()
+  
+  #add the remaining rows from the original df
+final_df <- right_join(partDF_.4, data)
+
+final_df
 }
 ```
 
-# Emic variables 
+# Emic variables
+
 ```{r}
 var_names_string <- function(actual_string){
    extract_no <- str_extract_all({{actual_string}},"\\(?[0-9,.]+\\)?") %>% 
@@ -72,43 +131,57 @@ var_names_string <- function(actual_string){
 }
 
 
-#build a list with all fs of candidate models 
+#build a list with all factor scores(fs) of candidate models 
 cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"))
 
+#list of all variable names for all candidate models
 fs_var_names <- map(cand_model_names, var_names_string)
 
-list_fs <- fs_var_names %>% 
- purrr::map(select_Vars)
-
-
+#list of all factor scores for all emic - solutions in the paper - variables
+list_fs <- map(fs_var_names, select_Vars)
 ```
 
-# Etic variables 
+# Etic variables
+
 ### German
-**German male-target factors**  
-M1 - Weakling, Sissy, Chicken, Coward, Softy  
-M2 - Smart-aleck, Wise-guy, Pain-in-the-neck, Liar, Loudmouth  
-M3 - Thinker, Intellectual, Genius, Egghead, Quick-thinker  
-M4 - Joker, Clown, Comedian, Life-of-the-party, Jester  |
-M5 - Ladies'-man, Lady-killer, Playboy, Stud, Womanizer 
-M6 - Recluse, Loner, Skeptic,  Nag, Individual  
-M7 - Stickler, Careerist, Born-fighter, High-flier  
+
+**German male-target factors**
+
+-   M1 - Weakling, Sissy, Chicken, Coward, Softy
+
+-   M2 - Smart-aleck, Wise-guy, Pain-in-the-neck, Liar, Loudmouth
+
+-   M3 - Thinker, Intellectual, Genius, Egghead, Quick-thinker
+
+-   M4 - Joker, Clown, Comedian, Life-of-the-party, Jester
+
+-   M5 - Ladies'-man, Lady-killer, Playboy, Stud, Womanizer
+
+-   M6 - Recluse, Loner, Skeptic, Nag, Individual
+
+-   M7 - Stickler, Careerist, Born-fighter, High-flier
 
 ```{r}
 german_man_df <- create_df("sc_gm", 7)
 ```
 
-**German female-target factors ** 
-F1 - Loudmouth, Nag, Nuisance, Pest, Pain-in-the-neck 
-F2 - Thinker, Authority, Intellectual, Egghead, Quick-thinker 
-F3 - Joker, Comedian, Life-of-the-party, Pal 
-F4 - Conservative, Bore, Sleephead, Coward, Hanger-on 
-F5 - Pessimist, Chicken, Dreamer, Daydreamer, Skeptic 
-F6 - Beauty, Careerist, Materialist, Sex-object, Fashion-plate
+**German female-target factors**
+
+-   F1 - Loudmouth, Nag, Nuisance, Pest, Pain-in-the-neck
+
+-   F2 - Thinker, Authority, Intellectual, Egghead, Quick-thinker
+
+-   F3 - Joker, Comedian, Life-of-the-party, Pal
+
+-   F4 - Conservative, Bore, Sleephead, Coward, Hanger-on
+
+-   F5 - Pessimist, Chicken, Dreamer, Daydreamer, Skeptic
+
+-   F6 - Beauty, Careerist, Materialist, Sex-object, Fashion-plate
+
 ```{r}
 german_woman_df <- create_df("sc_gw", 6) 
 ```
-
 
 ```{r}
 german_list<- list(german_man_df, german_woman_df)
@@ -122,40 +195,79 @@ mw_string <- rep(c("_m","_w"), each = 5)
 
 names(german_cors) <- str_c(cand_model_names , mw_string)
 
-german_cors
+
+#publication ready table
+neat_pub_table <- function(data){
+  
+  #rearranges the cor mats in a clustered/diagonal format
+  neat_cors <- map(data, neatCortab)
+  
+  #additional cols - factor labels, type-nouns
+factor_labels_table <- factor_labels_RAWtable %>% 
+  mutate(model = factor(model, levels= unique(model))) %>% 
+  group_split(model)
+
+
+names(factor_labels_table) <- c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob")
+
+#Join the neat table with all the labels
+joined_tables <- Map(left_join, neat_cors, factor_labels_table)
+
+select_cols <- function(df){
+  df %>% 
+    dplyr::select(-model) %>% 
+  dplyr::select(cand_model, factor_labels, type_nouns, everything())
+  
+}
+
+final_neat_cors <- map(joined_tables, select_cols)
+final_neat_cors
+
+}
+
+neat_pub_german <- neat_pub_table(german_cors)
+```
+
+```{r, results='asis'}
+map(neat_pub_german, ~DT::datatable(.x,  options = list(columnDefs = list(list(className = 'dt-center', targets = 0:4)))) %>%
+      htmltools::tagList() %>%
+      print())
 ```
 
 ```{r eval=FALSE}
 #Write in excel sheet to send 
 export_list <- function(list_name){
-  filename <- paste0("/Users/vinitavader/Desktop/EnglishTypeNoun-Lexical-Study/data/etic_vars_cor/",{{list_name}},".xlsx")
+  filename <- paste0("/Users/vinitavader/Desktop/EnglishTypeNoun-Lexical-Study/data/tables/etic_vars_cor/",{{list_name}},".xlsx")
   
   rio::export(eval(parse(text = {{list_name}})), check.rows = FALSE, filename)
 }
 
-export_list("german_cors") 
+export_list("neat_pub_german") 
 ```
 
 ### Dutch
-**Dutch self factors** 
-Malignity - Cheater, Monster, Arch-villain, False-friend 
-Anxiety - Chicken, Scaredy-cat, Coward, Bore 
-Extraversion - Boaster, Merrymaker, Chatterer, Chatterbox 
-Culture - Strategist, Philosopher, Thinker, Intellectual 
-Antagonism - Troublemaker, Nuisance, Obstructionist, Oppositionalist 
-Perseverance - Go-getter, Worker, Workhorse 
-Materialism - Capitalist, Leader, Authority, Boss
+
+**Dutch self factors**
+
+-   Malignity - Cheater, Monster, Arch-villain, False-friend
+
+-   Anxiety - Chicken, Scaredy-cat, Coward, Bore
+
+-   Extraversion - Boaster, Merrymaker, Chatterer, Chatterbox
+
+-   Culture - Strategist, Philosopher, Thinker, Intellectual
+
+-   Antagonism - Troublemaker, Nuisance, Obstructionist, Oppositionalist
+
+-   Perseverance - Go-getter, Worker, Workhorse
+
+-   Materialism - Capitalist, Leader, Authority, Boss
+
 ```{r}
 dutch_self_df <- create_df("sc_ds", 7) 
 ```
 
-**Dutch-partner factors** 
-Malignity - Monster, Moron, Vandal, Pain-in-the-neck 
-Extraversion - Clown, Comedian, Merrymaker 
-Anxiety - Scaredy-cat, Worrywart, Coward, Chicken Antagonism - Know-it-all, Oppositionalist, Obstructionist 
-Culture - Philosopher, Poet, Intellectual, Anarchist 
-Perseverance - Go-getter, Fighter, Worker, Workhorse 
-Colourlessness - Stoic, Pragmatist, Chameleon, Softy
+**Dutch-partner factors** Malignity - Monster, Moron, Vandal, Pain-in-the-neck Extraversion - Clown, Comedian, Merrymaker Anxiety - Scaredy-cat, Worrywart, Coward, Chicken Antagonism - Know-it-all, Oppositionalist, Obstructionist Culture - Philosopher, Poet, Intellectual, Anarchist Perseverance - Go-getter, Fighter, Worker, Workhorse Colourlessness - Stoic, Pragmatist, Chameleon, Softy
 
 ```{r}
 dutch_peer_df <- create_df("sc_dp", 7) 
@@ -171,27 +283,43 @@ cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), 
 
 sp_string <- rep(c("_s","_p"), each = 5)
 
-names(dutch_cors) <- str_c(cand_model_names , sp_string)
+names(dutch_cors) <- str_c(cand_model_names, sp_string)
 
-dutch_cors
+
+neat_pub_dutch <- neat_pub_table(dutch_cors)
+```
+
+```{r results='asis'}
+map(neat_pub_dutch, ~DT::datatable(.x,  options = list(columnDefs = list(list(className = 'dt-center', targets = 0:4)))) %>%
+      htmltools::tagList() %>%
+      print())
 ```
 
 ```{r eval=FALSE}
 #Write in excel sheet to send 
-export_list("dutch_cors") 
+export_list("neat_pub_dutch") 
 ```
 
-### Big 5 
-**Big Five factors** 
-Extraversion - Bold, Talkative, Sociable versus Bashful, Shy, Timid Agreeableness - Warm, Tolerant, Lenient versus Harsh, Stern, Cruel, Sly 
-Conscientiousness - Organized, Logical, Firm versus Disorganized, Unsystematic, Scatterbrained 
-Emotional Stability - Anxious, Fearful, Emotional, Jealous Intellect - Philosophical, Complex, Clever, Unconventional versus Conventional, Traditional, Unreflective
+### Big 5
+
+**Big Five factors**
+
+-   Extraversion - Bold, Talkative, Sociable versus Bashful, Shy, Timid
+
+-   Agreeableness - Warm, Tolerant, Lenient versus Harsh, Stern, Cruel, Sly
+
+-   Conscientiousness - Organized, Logical, Firm versus Disorganized, Unsystematic, Scatterbrained
+
+-   Emotional Stability - Anxious, Fearful, Emotional, Jealous
+
+-   Intellect - Philosophical, Complex, Clever, Unconventional versus Conventional, Traditional, Unreflective
 
 ```{r}
+#make a df of the Big 5 only 
 big5_var<- c("scb5_i","scb5_ii","scb5_iii","scb5_iv","scb5_v")
 big5_df <- select_Vars2(big5_var)
 
-#cor_mat
+#cor mats
 big5_cors <- all_corr_mats(big5_df)
 
 #sheet names
@@ -200,23 +328,58 @@ cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), 
 big5_string <- rep(c("_ext","_agr", "_consc", "_es", "_intl"), each = 5)
 
 names(big5_cors) <- str_c(cand_model_names , big5_string)
+ 
+   
+ cand_models <-  c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob")
+  
+ #cand_model_name = "fsr8vx"
+wide_df <- function(cand_model_name){
+     
+     #combine dataframes for the same candidate model
+     big5_cors[grep(paste0("^",{{cand_model_name}}),     names(big5_cors))] %>% 
+     bind_rows() %>% 
+       #generate a vector that can be used for pivot wider, so that names of the cols are pty
+     mutate(pty_vec = rep(c("ext","agr", "consc", "es", "intl"), each = parse_number({{cand_model_name}}))) %>% 
+       #to make it look like a cor mat
+   pivot_wider(names_from = pty_vec, values_from = V1 )
+   }
+   
+ big5_cors_mats <- map(cand_models, wide_df)
+     
+ names(big5_cors_mats) <- c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob")
 
-big5_cors
+neat_pub_big5 <- neat_pub_table(big5_cors_mats)
+```
+
+```{r results='asis'}
+map(neat_pub_big5, ~DT::datatable(.x,  options = list(columnDefs = list(list(className = 'dt-center', targets = 0:4)))) %>%
+      htmltools::tagList() %>%
+      print())
 ```
 
 ```{r eval=FALSE}
 #Write in excel sheet to send 
-export_list("big5_cors") 
+export_list("neat_pub_big5") 
 ```
 
 ### Multilanguage
-**Multi-Language Seven factors** 
-Gregariousness - Talkative, Sociable, Comical, Expressive versus Shy, Bashful 
-Self-Assurance - Bold, Masculine, Firm versus Fearful, Anxious, Timid 
-Even Temper - Patient versus Irritable, Harsh, Jealous, Emotional Concern for Others - Warm, Courteous, Tolerant versus Cruel, Egotistical 
-Conscientiousness - Organized, Stern, Thrifty versus Disorganized, Unsystematic 
-Originality/Virtuosity - Philosophical, Clever, Complex versus Unreflective  
-Negative Valence - Corrupt, Evil, Good-for-nothing
+
+**Multi-Language Seven factors**
+
+-   Gregariousness - Talkative, Sociable, Comical, Expressive versus Shy, Bashful --
+
+-   Self-Assurance - Bold, Masculine, Firm versus Fearful, Anxious, Timid Even
+
+-   Temper - Patient versus Irritable, Harsh, Jealous, Emotional
+
+-   Concern for Others - Warm, Courteous, Tolerant versus Cruel, Egotistical
+
+-   Conscientiousness - Organized, Stern, Thrifty versus Disorganized, Unsystematic
+
+-   Originality/Virtuosity - Philosophical, Clever, Complex versus Unreflective
+
+-   Negative Valence - Corrupt, Evil, Good-for-nothing
+
 ```{r}
 ml_var <-c(str_subset(names(data), pattern="scml"),              str_subset(names(data), pattern="sc_nval")) %>%
   #remove attraction var, it is an add on
@@ -235,24 +398,55 @@ ml_string <- rep(c("_gr","_sa", "_tmp", "_cfo", "_con", "_int", "_nval"), each =
 
 names(ml_cors) <- str_c(cand_model_names , ml_string)
 
-ml_cors
+#function
+model_wise_cors <- function(string, cor_list){
+  
+  #create a string of all names
+  select_names <- names(cor_list) %>% 
+  str_subset(.,pattern = {{string}})
+  
+  #create a list with all models
+  list = cor_list[names(cor_list) %in% select_names] 
+  
+  #convert the list to df
+  plyr::ldply (list, data.frame) %>% 
+    
+    # #this will make ..1 = x1 for cleaner names
+    # janitor::clean_names() %>% 
+  mutate(var = word(.id, 2, sep = "_")) %>% 
+    dplyr::select(var, V1, cand_model) %>%
+    pivot_wider(names_from = var, values_from = V1)
+}
+
+ml_cors <- map(unique(cand_model_names), model_wise_cors, ml_cors)
+
+names(ml_cors) <- unique(cand_model_names)
+
+neat_pub_ml <- neat_pub_table(ml_cors)
+```
+
+```{r results='asis'}
+map(neat_pub_ml, ~DT::datatable(.x,  options = list(columnDefs = list(list(className = 'dt-center', targets = 0:4)))) %>%
+      htmltools::tagList() %>%
+      print())
 ```
 
 ```{r eval=FALSE}
 #Write in excel sheet to send 
-export_list("ml_cors") 
+export_list("neat_pub_ml") 
 ```
 
 ### Big 1
-**Big One factors**
-Responsible, Patient, Warm, Clever, Sociable versus Cruel, Irritable, Disorganized, Corrupt, Dishonest
+
+-   **Big One factors** Responsible, Patient, Warm, Clever, Sociable versus Cruel, Irritable, Disorganized, Corrupt, Dishonest
+
 ```{r}
 big1_var <-str_subset(names(data), pattern="scb1")
-
 big1_df <- select_Vars2(big1_var)
 
 #cor_mat
-big1_cors <- all_corr_mats(big1_df)
+big1_cors <- all_corr_mats(big1_df) %>% 
+   map(., ~rename(., "scb1" = "V1"))
 ```
 
 ```{r}
@@ -263,16 +457,21 @@ big1_string <- rep(c("_scb1.sd"), times =5)
 
 names(big1_cors) <- str_c(cand_model_names , big1_string)
 
-big1_cors
+#publication ready table
+#neat_pub_big1 <- neat_pub_table(big1_cors) 
 ```
 
-```{r eval=FALSE}
-#Write in excel sheet to send 
-export_list("big1_cors") 
+```{r eval=FALSE, include=FALSE}
+#Write in excel sheet to send - DON"T you need a combined Big 1 and 2 table
+#export_list("neat_pub_big1") 
 ```
+
 ### Big 2
 
-**Big Two factors**  Morality and Social Propriety - Courteous, Patient, Tolerant, Responsible versus Cruel, Harsh, Irritable, Reckless, Corrupt, Egotistical  Dynamism/Dominance/Deference - Expressive, Talkative, Bold, Clever, Sociable, Humorous, Good-looking versus Timid, Dull, Bashful
+-   **Big Two factors** - Morality and Social Propriety - Courteous, Patient, Tolerant, Responsible versus Cruel, Harsh, Irritable, Reckless, Corrupt, Egotistical
+
+-   Dynamism/Dominance/Deference - Expressive, Talkative, Bold, Clever, Sociable, Humorous, Good-looking versus Timid, Dull, Bashful
+
 ```{r}
 big2_var <-str_subset(names(data), pattern="scb2") %>% 
              str_subset(pattern="10")
@@ -283,19 +482,37 @@ big2_df <- select_Vars2(big2_var)
 big2_cors <- all_corr_mats(big2_df)
 ```
 
-
 ```{r}
 #sheet names
 cand_model_names <- rep(c("fsr1unr", "fsr5vx", "fsr8vx", "fsr13ob", "fsz32ob"), times = 2)
-
 big2_string <- rep(c("_scb2.s10","_scb2.d10"), each = 5)
-
 names(big2_cors) <- str_c(cand_model_names , big2_string)
 
-big2_cors
+big2_cors <- map(unique(cand_model_names), model_wise_cors, big2_cors)
+names(big2_cors) <- unique(cand_model_names)
+
+#publication ready table
+#neat_pub_big2 <- neat_pub_table(big2_cors)
+```
+
+```{r eval=FALSE, include=FALSE}
+#Write in excel sheet to send - DON"T you need a combined Big 1 and 2 table
+#export_list("neat_pub_big2") 
+```
+
+```{r}
+# Combined Big1 and Big2 table
+neat_pub_big1n2 <- map2(big1_cors,big2_cors, left_join) %>% 
+                       neat_pub_table()
+```
+
+```{r results='asis'}
+map(neat_pub_big1n2, ~DT::datatable(.x,  options = list(columnDefs = list(list(className = 'dt-center', targets = 0:4)))) %>%
+      htmltools::tagList() %>%
+      print())
 ```
 
 ```{r eval=FALSE}
 #Write in excel sheet to send 
-export_list("big2_cors") 
+export_list("neat_pub_big1n2") 
 ```
